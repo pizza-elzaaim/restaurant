@@ -794,7 +794,7 @@ function sendOrder(){
   msg += `👤 الاسم: ${name}\n📱 الموبايل: ${phone}\n`;
   msg += del ? `📍 العنوان: ${addr}\n🛵 توصيل\n` : `🏪 استلام من المحل\n`;
   if (note) msg += `📝 ملاحظات: ${note}\n`;
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+  window.open(`https://wa.me/${phone}`, "_blank");
 }
 
 function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(()=>e.classList.remove('show'),1600); }
