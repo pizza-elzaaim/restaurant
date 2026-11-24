@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بيتزاالزعيم | اطلب دلوقتي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#f7360b; --red-dark:#891818; --orange:#1f0ae4; --yellow:#f8360a;
+  --cream:#fff6e5; --dark:#050d12; --card:#2a1c10; --text:#fff3df; --muted:#f7f2ee;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Cairo',system-ui,sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;line-height:1.6}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0}
+.container{width:min(1150px,92%);margin:auto}
+
+/* ===== Navbar ===== */
+nav{position:fixed;top:0;inset-inline:0;z-index:50;padding:14px 0;transition:.3s}
+nav.scrolled{background:rgba(37, 44, 37, 0.92);backdrop-filter:blur(10px);box-shadow:0 6px 24px #0008}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:1.4rem;color:var(--yellow)}
+.logo img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.nav-links{display:flex;gap:22px;font-weight:600}
+.nav-links a:hover{color:var(--yellow)}
+.cart-btn{background:var(--red);color:#fff;padding:9px 18px;border-radius:30px;font-weight:800;display:flex;gap:8px;align-items:center;transition:.2s}
+.cart-btn:hover{background:var(--orange);transform:scale(1.05)}
+.cart-count{background:var(--yellow);color:var(--dark);border-radius:50%;min-width:24px;height:24px;display:grid;place-items:center;font-size:.85rem}
+@media(max-width:760px){.nav-links{display:none}}
+
+/* ===== Hero ===== */
+.hero{min-height:100vh;display:flex;align-items:center;padding:110px 0 60px;position:relative;
+  background:radial-gradient(circle at 25% 40%,#4a2410 0%,#1b1209 60%)}
+.hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:900;line-height:1.15}
+.hero h1 span{color:var(--yellow);display:block}
+.hero p{color:var(--muted);font-size:1.15rem;margin:18px 0 28px;max-width:480px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:40px;font-weight:800;font-size:1.05rem;transition:.25s}
+.btn-primary{background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;box-shadow:0 10px 30px #d6282866}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 36px #d6282899}
+.btn-ghost{border:2px solid var(--yellow);color:var(--yellow);background:transparent}
+.btn-ghost:hover{background:var(--yellow);color:var(--dark)}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;text-align:center}.hero p{margin-inline:auto}.hero-btns{justify-content:center}}
+
+/* ===== 3D Pizza (CSS 3D) ===== */
+.scene{height:440px;perspective:1100px;display:grid;place-items:center;position:relative;touch-action:pan-y;cursor:grab;user-select:none}
+.scene:active{cursor:grabbing}
+.pizza{--size:min(340px,78vw);width:var(--size);height:var(--size);position:relative;transform-style:preserve-3d;
+  transform:rotateX(var(--rx,55deg)) rotateZ(var(--rz,0deg));transition:transform .08s linear}
+.layer{position:absolute;inset:0;border-radius:50%}
+.crust{background:radial-gradient(circle,#e8a24a 60%,#c9772b 100%);box-shadow:inset 0 0 0 6px #b5651d33}
+.sauce{inset:7%;background:radial-gradient(circle,#c1121f 0%,#a4161a 100%)}
+.cheese{inset:9%;background:
+  radial-gradient(circle at 30% 30%,#ffe066 0 8%,transparent 9%),
+  radial-gradient(circle at 70% 60%,#ffd23f 0 10%,transparent 11%),
+  radial-gradient(circle at 45% 78%,#ffe066 0 9%,transparent 10%),
+  radial-gradient(circle,#ffcf40 0%,#f9b81f 100%)}
+.top{position:absolute;border-radius:50%;box-shadow:0 3px 6px #0006}
+.pep{width:15%;height:15%;background:radial-gradient(circle at 35% 35%,#e5383b,#8c1c13);border:2px solid #7a1610}
+.olive{width:6.5%;height:6.5%;background:#111;border:3px solid #333}
+.pepper{width:8%;height:5%;background:#2d9a3f;border-radius:50%;transform-origin:center}
+.shadow{position:absolute;inset:-4%;border-radius:50%;background:#000;filter:blur(28px);opacity:.55;transform:translateZ(-40px)}
+.float{position:absolute;font-size:2.4rem;animation:bob 4s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 8px 8px #0008)}
+@keyframes bob{50%{transform:translateY(-16px) rotate(8deg)}}
+.hint{position:absolute;bottom:0;color:var(--muted);font-size:.85rem}
+
+/* ===== Sections ===== */
+section{padding:80px 0}
+.title{text-align:center;margin-bottom:40px}
+.title h2{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900;color:var(--yellow)}
+.title p{color:var(--muted)}
+.reveal{opacity:0;transform:translateY(40px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+.reveal.show{opacity:1;transform:none}
+
+/* Menu */
+.cats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:34px}
+.cat{background:var(--card);color:var(--text);padding:9px 22px;border-radius:30px;font-weight:700;border:2px solid transparent;transition:.2s}
+.cat:hover{border-color:var(--orange)}
+.cat.active{background:var(--red);}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;perspective:1000px}
+.item{background:var(--card);border-radius:22px;overflow:hidden;transition:transform .15s,box-shadow .3s;transform-style:preserve-3d;box-shadow:0 10px 30px #0006}
+.item:hover{box-shadow:0 20px 44px #d6282844}
+.item-img{height:180px;background:linear-gradient(135deg,#4a2410,#2a1c10);display:grid;place-items:center;font-size:4.5rem;overflow:hidden}
+.item-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.item:hover .item-img img{transform:scale(1.12)}
+.item-body{padding:18px;transform:translateZ(30px)}
+.item-body h3{font-size:1.2rem}
+.item-body p{color:var(--muted);font-size:.9rem;min-height:44px}
+.item-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.price{font-size:1.3rem;font-weight:900;color:var(--yellow)}
+.add{background:var(--red);color:#fff;padding:9px 18px;border-radius:30px;font-weight:800;transition:.2s}
+.add:hover{background:var(--orange);transform:scale(1.07)}
+.size-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.size-row label{flex:1;text-align:center;padding:5px 4px;border:2px solid #5a4430;border-radius:10px;font-size:.8rem;cursor:pointer;font-weight:700}
+.size-row input{display:none}
+.size-row input:checked+span{color:var(--yellow)}
+.size-row label:has(input:checked){border-color:var(--yellow);background:#fcbf4922}
+
+/* Gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.gallery div{aspect-ratio:1;border-radius:20px;overflow:hidden;background:var(--card);display:grid;place-items:center;font-size:4rem}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.gallery div:hover img{transform:scale(1.1) rotate(2deg)}
+
+/* Contact */
+.contact{background:#140d06}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.c-card{background:var(--card);padding:26px;border-radius:22px;text-align:center}
+.c-card .ic{font-size:2.4rem}
+.c-card h3{margin:8px 0}
+.c-card a.num{display:block;font-size:1.25rem;font-weight:800;color:var(--yellow);margin:4px 0;direction:ltr}
+.c-card a.num:hover{color:var(--orange)}
+footer{text-align:center;padding:26px;color:var(--muted);font-size:.9rem;border-top:1px solid #ffffff14}
+
+/* Floating buttons */
+.fab{position:fixed;bottom:20px;inset-inline-start:20px;z-index:40;display:flex;flex-direction:column;gap:12px}
+.fab a{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:1.6rem;box-shadow:0 8px 22px #0008;transition:.2s}
+.fab a:hover{transform:scale(1.12)}
+.fab .wa{background:#25d366}.fab .call{background:var(--red)}
+
+/* Cart drawer */
+.overlay{position:fixed;inset:0;background:#000a;z-index:60;opacity:0;pointer-events:none;transition:.3s}
+.overlay.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(440px,100%);background:#1f150b;z-index:70;transform:translateX(-105%);transition:.4s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+html[dir=rtl] .drawer{inset-inline-end:auto;left:0}
+.drawer.open{transform:none}
+.d-head{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff1a}
+.d-head h3{font-size:1.4rem}
+.close{background:transparent;color:var(--text);font-size:1.6rem}
+.d-body{flex:1;overflow:auto;padding:16px 20px}
+.empty{text-align:center;color:var(--muted);margin-top:40px;font-size:1.1rem}
+.line{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed #ffffff1a}
+.line .nm{flex:1}
+.line .nm small{display:block;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font-size:1.1rem;font-weight:900}
+.qty span{min-width:20px;text-align:center;font-weight:800}
+.line .lp{font-weight:800;color:var(--yellow);min-width:70px;text-align:end}
+.d-foot{padding:16px 20px;border-top:1px solid #ffffff1a;background:#17100a}
+.sum{display:flex;justify-content:space-between;color:var(--muted);margin-bottom:4px}
+.sum.total{color:var(--text);font-size:1.25rem;font-weight:900}
+.form input,.form textarea{width:100%;margin:8px 0 0;padding:11px 14px;border-radius:12px;border:2px solid #5a4430;background:#2a1c10;color:var(--text);font-family:inherit;font-size:1rem}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--orange)}
+.form textarea{resize:none;height:60px}
+.mode{display:flex;gap:8px;margin-top:8px}
+.mode label{flex:1;text-align:center;padding:9px;border:2px solid #5a4430;border-radius:12px;font-weight:700;cursor:pointer}
+.mode input{display:none;width:auto}
+.mode label:has(input:checked){border-color:var(--yellow);background:#fcbf4922;color:var(--yellow)}
+.send{width:100%;margin-top:12px;justify-content:center;background:#25d366;color:#fff;border-radius:14px;padding:14px;font-size:1.1rem;font-weight:900}
+.send:hover{filter:brightness(1.1)}
+.err{color:#ff8080;font-size:.9rem;margin-top:6px;min-height:20px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translate(-50%,30px);background:var(--yellow);color:var(--dark);padding:10px 22px;border-radius:30px;font-weight:800;z-index:90;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<!-- ======================================================
+     ✏️ اعدّل هنا بس: الاسم، الأرقام، المنيو، الصور
+     ====================================================== -->
+<script>
+const CONFIG = {
+  name: "بيتزا الزعيم",
+  slogan: "اصل البيتزا في مصر خبره 34سنه",
+  description: "عجينة طازة، جبنة موزاريلا حقيقية، وطعم يخليك تطلب تاني. اطلب دلوقتي وإحنا بنوصلك سخنة لحد باب البيت.  الموقع ده معمول عشان تسهّل عليك    (منيو)    الطلب، لو حابب ممكن تكلمنا على الأرقام اللي تحت.",
+  logo: "c:\Users\oraby\Pictures\images.jpg",            // مثال: "images/logo.png"  (سيبها فاضية لو مفيش)
+
+  // اختياري: صورة بيتزا حقيقية متصورة من فوق (مربعة والبيتزا مالية الصورة) عشان تتلصق على المجسم 3D.
+  // لو سيبتها فاضية هيستخدم البيتزا المرسومة تلقائياً. (بتشتغل بس لما الموقع يتنشر أونلاين، مش من الملف المحلي)
+  pizzaImage: "",
+
+  // رقم الواتساب اللي هيستقبل الطلبات (بالصيغة الدولية بدون + ولا أصفار) مثال مصر: 201001234567
+  whatsapp: "01140958234",
+
+  // أرقام التواصل (هتظهر في الموقع)
+  phones: [
+    { label: "خدمة التوصيل", number: "0235421110" },
+    { label: "الفرع الرئيسي", number: "01223500377" },
+    {label: "", number: "01121230188"},
+    {label: "", number: "01090772010"}
+ 
+  ],
+
+  address:  "  40   شارع ترعه السواحل الوراق ناصيه شارع المسبك",
+  hours: "24 ساعة / 7 أيام",
+  mapLink: "36X8+9X",         // اختياري: رابط الموقع على جوجل ماب
+  mapLink: "36X8+9X قسم الوراق",         // اختياري: رابط الموقع على جوجل ماب
+
+  currency: "ج.م",
+  deliveryFee: 20,     // رسوم التوصيل (0 = مجاناً)
+
+  // الأقسام بتتعمل أوتوماتيك من حقل category
+  // image: ضع مسار الصورة "images/margherita.jpg" أو رابط. لو فاضي هيظهر إيموجي.
+  // sizes: اختياري، لو عايز أحجام بأسعار مختلفة
+  menu: [
+    { id:1, category:"بيتزا", name:"مارجريتا", desc:"صوص طماطم، موزاريلا، ", image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:70},{n:"وسط",p:85},{n:"كبير",p:140}] },
+    { id:2, category:"بيتزا", name:"سجق اطالي", desc:"سجق + خضار + جبنه", image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:75},{n:"وسط",p:100},{n:"كبير",p:140}] },
+    { id:3, category:"بيتزا", name:"لحمه  شرقي/اطالي", desc:"لحمه بلدي + خضار + جبنه", image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
+    { id:4, category:"بيتزا", name:"فراخ   شرقي/اطالي", desc:"قطع فراخ،+خضار + جبنه", image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
+    { id:5, category:"بيتزا", name:"سجق شرقي", desc:"سجق اسكندراني +خضار + جبنه", image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:120}]},
+    { id:6,  category: "بيتزا" , name: "سوسيس  شرقي/ايطالي", desc:"سوسيس+خضار+جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
+    { id:7,  category: "بيتزا" , name: "بسطرمه  شرقي/اطالي", desc:"بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
+    { id:8,  category: "بيتزا" , name: "ميكس جبن   شرقي/اطالي", desc:"موتزريلا + رومي + كيري + خضار" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
+    { id:9,  category: "بيتزا" , name: "الزعيم  شرقي/اطالي", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
+    { id:10,  category: "بيتزا" , name: "مشرم  شرقي/اطالي", desc:"مشرم + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
+    { id:11,  category: "بيتزا" , name: "تونه  شرقي/اطالي", desc:"تونه + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
+    { id:12,  category: "بيتزا" , name: "ميكس   شرقي/اطالي", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
+    { id:13,  category: "بيتزا" , name: "بلوبيف  شرقي/اطالي", desc:"بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
+    { id:14,  category: "بيتزا" , name: "فراخ رانش  اطالي", desc:"قطع فراخ + صوص الرانش + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
+    { id:15,  category: "بيتزا" , name: "فراخ باربيكيو  اطالي", desc:"سجق + صوص الباربيكيو + خضار + جبنه" , image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
+    { id:16,  category: "فطير حلو" , name: "فطير ساده بالسكر", desc:"فطير بالسكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:35},{n:"وسط",p:45},{n:"كبير",p:60}]},
+    { id:17,  category: "فطير حلو" , name: "فطير بالبسبوس", desc:"بسبوسه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:40},{n:"وسط",p:55},{n:"كبير",p:70}]},
+    { id:18,  category: "فطير حلو" , name: "فطير بالنوتيلا", desc:"كاستير + نوتيلا" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:120}]},
+    { id:19,  category: "فطير حلو" , name: "فطير بالكنافه", desc:"كنافه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:40},{n:"وسط",p:55},{n:"كبير",p:70}]},
+    { id:20,  category: "فطير حلو" , name: "فطير باكاستير", desc:"كاستير + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:40},{n:"وسط",p:55},{n:"كبير",p:70}]},
+    { id:21,  category: "فطير حلو" , name: "مشكل حلو", desc:"بسبوسه + كنافه + كاستير + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:55},{n:"وسط",p:70},{n:"كبير",p:85}]},
+    { id:22,  category: "فطير حلو" , name: "فطير بالكاستير و البسبوسه", desc:"كاستير + بسبوسه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:45},{n:"وسط",p:55},{n:"كبير",p:70}]},
+    { id:23,  category: "فطير حلو" , name: "فطير بالكاستير و الكنافه", desc:"كاستير + كنافه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:45},{n:"وسط",p:55},{n:"كبير",p:70}]},
+    { id:24,  category: "فطير حلو" , name: "فطير بالبسويه و الكنافه", desc:"بسويه + كنافه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:50},{n:"وسط",p:65},{n:"كبير",p:80}]},
+    { id:25,  category: "فطير حلو" , name: "فطير بالكاستير و المكسرات", desc:"كاستير + مكسرات + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:50},{n:"وسط",p:65},{n:"كبير",p:80}]},
+    { id:26,  category: "فطير حلو" , name: "فطير سكر و لبن", desc:"سكر + لبن" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:45},{n:"وسط",p:65},{n:"كبير",p:85}]},
+    { id:27,  category: "فطير بالقشطه " , name: "فطير قشطه و سكر", desc:"قشطه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:55},{n:"وسط",p:70},{n:"كبير",p:85}]},
+    { id:28,  category: "فطير بالقشطه " , name: "فطير قشطه و العسل", desc:"قشطه + عسل" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:95}]},
+    { id:29,  category: "فطير بالقشطه " , name: "فطير قشطه و المكسرات", desc:"قشطه + مكسرات + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:85}]},
+    { id:30,  category: "فطير بالقشطه " , name: "فطير قشطه و الكنافه", desc:"قشطه + كنافه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:90}]},
+    { id:31,  category: "فطير بالقشطه " , name: "فطير قشطه و البسبوسه", desc:"قشطه + بسبوسه + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:90}]},
+    { id:32,  category: "فطير بالقشطه " , name: "فطير قشطه و lvfn", desc:"قشطه + مربى + سكر" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:110}]},
+    { id:33,  category: "فطير بالقشطه " , name: "فطير مشلتت بالسمن البلدي", desc:"فطير مشلتت بالسمن البلدي" , image:"", emoji:"🥞",
+      sizes:[{n:"صغير",p:80},{n:"وسط",p:100},{n:"كبير",p:130}]},   
+    { id:34,  category: "كريبات" , name: "كريب بطاطس", desc:"بطاطس + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:30}]}, 
+    { id:34,  category: "كريبات" , name: "كريب كريسبي", desc:"كريسبي + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:75}]},   
+    { id:35,  category: "كريبات" , name: "كريب سجق", desc:"سجق + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:65}]},  
+    { id:36,  category: "كريبات" , name: "كريب فراخ شاورما", desc:"قطع فراخ + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:75}]},  
+    { id:37,  category: "كريبات" , name: "كريب ميكس فراخ", desc:"شاورما فراخ +زنجر +بانيه + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:85}]},
+    { id:38,  category: "كريبات" , name: "كريب بانيه", desc:"  بانيه + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:65}]},  
+    { id:39,  category: "كريبات" , name: "كريب زنجر", desc:"زنجر + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"كبير",p:75}]},
+    { id:40,  category: "كريبات" , name: "كريب فاهيتا فراخ", desc:"فاهيتا  + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:85}]},
+    { id:41,  category: "كريبات" , name: "كريب اسستربس", desc:"استربس+ موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:75}]},
+    { id:42,  category: "كريبات" , name: "كريب الزعيم", desc:"سجق + بسطرمه +سوسيس + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:85}]},
+    { id:43,  category: "كريبات" , name: "كريب سوسيس", desc:"سوسيس + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+      sizes:[{n:"one size",p:65}]},
+    { id:44,  category: "مكرونات" , name: "مكرونه نابولي", desc:" صوص + موتزريلا" , image:"", emoji:"🍝",
+      sizes:[{n:"one size",p:50}]},  
+    { id:45,  category: "مكرونات  " , name: "مكرونه فوتشي", desc:"+جبنه رومي+ صوص + موتزريلا" , image:"", emoji:"🍝",
+      sizes:[{n:"one size",p:65}]},  
+    { id:46,  category: "مكرونات  " , name: "مكرونه بلونيز", desc:" لحمه + صوص + موتزريلا" , image:"", emoji:"🍝",
+      sizes:[{n:"one size",p:65}]},  
+    { id:47,  category: "مكرونات  " , name: "مكرونه ميامي", desc:"سجق + صوص + موتزريلا" , image:"", emoji:"🍝",
+      sizes:[{n:"one size",p:65}]},  
+    { id:48,  category: "مكرونات" , name: "مكرونه نيجرسكو فراخ ", desc:"فراخ+ صوص + موتزريلا" , image:"", emoji:"🍝",
+      sizes:[{n:"one size",p:65}]},  
+    { id:49,  category: "مكرونات" , name: "مكرونه ميكس كانو", desc:"لحمه + مشروم + صوص + موتزريلا" , image:"", emoji:"🍝",
+      sizes:[{n:"one size",p:80}]},
+    { id:50,  category: "مكرونات" , name: "مكرونه هوت دوج", desc:"سوسيس + صوص + موتزريلا" , image:"", emoji:"🍝",
+      sizes:[{n:"one size",p:80}]},
+    { }  
+     
+  
+  ]
+
+  // صور المعرض (اختياري) مثال: ["images/1.jpg","images/2.jpg"]  — لو فاضي بيتخفي القسم
+
+};
+</script>
+
+<!-- ===== Navbar ===== -->
+<nav id="nav">
+  <div class="container nav-in">
+    <a href="#top" class="logo"><span id="logoWrap">🍕</span><span id="brand"></span></a>
+    <div class="nav-links">
+      <a href="#menu">المنيو</a>
+      <a href="#gallery" id="galLink">المعرض</a>
+      <a href="#contact">تواصل معنا</a>
+    </div>
+    <button class="cart-btn" onclick="openCart()">🛒 السلة <span class="cart-count" id="count">0</span></button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <h1><span id="heroName"></span><em style="font-style:normal" id="heroSlogan"></em></h1>
+      <p id="heroDesc"></p>
+      <div class="hero-btns">
+        <a href="#menu" class="btn btn-primary">اطلب دلوقتي 🍕</a>
+        <a href="#contact" class="btn btn-ghost">📞 كلمنا</a>
+      </div>
+    </div>
+    <div class="scene" id="scene">
+      <span class="float" style="top:6%;inset-inline-start:6%">🍅</span>
+      <span class="float" style="top:14%;inset-inline-end:4%;animation-delay:-1s">🌿</span>
+      <span class="float" style="bottom:14%;inset-inline-start:2%;animation-delay:-2s">🧀</span>
+      <span class="float" style="bottom:20%;inset-inline-end:6%;animation-delay:-3s">🍄</span>
+      <div class="pizza" id="pizza"></div>
+      <div class="hint">↔ اسحب البيتزا عشان تلفها</div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Menu ===== -->
+<section id="menu">
+  <div class="container">
+    <div class="title reveal"><h2>المنيو</h2><p>اختار اللي نفسك فيه وضيفه للسلة</p></div>
+    <div class="cats" id="cats"></div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+</section>
+
+<!-- ===== Gallery ===== -->
+<section id="gallery" style="display:none">
+  <div class="container">
+    <div class="title reveal"><h2>معرض الصور</h2></div>
+    <div class="gallery" id="galGrid"></div>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="title reveal"><h2>تواصل معنا</h2><p>إحنا في خدمتك طول اليوم</p></div>
+    <div class="contact-grid">
+      <div class="c-card reveal"><div class="ic">📞</div><h3>اتصل بينا</h3><div id="phones"></div></div>
+      <div class="c-card reveal"><div class="ic">📍</div><h3>العنوان</h3><p id="addr"></p><a id="mapA" class="num" style="font-size:1rem;direction:rtl" target="_blank" rel="noopener"></a></div>
+      <div class="c-card reveal"><div class="ic">🕒</div><h3>مواعيد العمل</h3><p id="hours"></p></div>
+    </div>
+  </div>
+  <footer>© <span id="year"></span> <span id="foot"></span> — كل الحقوق محفوظة</footer>
+</section>
+
+<!-- Floating buttons -->
+<div class="fab">
+  <a class="wa" id="fabWa" target="_blank" rel="noopener" aria-label="واتساب">💬</a>
+  <a class="call" id="fabCall" aria-label="اتصال">📞</a>
+</div>
+
+<!-- Cart -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer">
+  <div class="d-head"><h3>🛒 طلبك</h3><button class="close" onclick="closeCart()">✕</button></div>
+  <div class="d-body" id="cartBody"></div>
+  <div class="d-foot" id="cartFoot">
+    <div class="sum"><span>المجموع</span><span id="sub">0</span></div>
+    <div class="sum"><span>التوصيل</span><span id="del">0</span></div>
+    <div class="sum total"><span>الإجمالي</span><span id="tot">0</span></div>
+    <div class="form">
+      <div class="mode">
+        <label><input type="radio" name="mode" value="delivery" checked> 🛵 توصيل</label>
+        <label><input type="radio" name="mode" value="pickup"> 🏪 استلام من المحل</label>
+      </div>
+      <input id="fName" placeholder="الاسم" autocomplete="name">
+      <input id="fPhone" placeholder="رقم الموبايل" inputmode="tel" autocomplete="tel">
+      <textarea id="fAddr" placeholder="العنوان بالتفصيل"></textarea>
+      <input id="fNote" placeholder="ملاحظات (اختياري)">
+      <div class="err" id="err"></div>
+      <button class="btn send" onclick="sendOrder()">إرسال الطلب على واتساب ✅</button>
+    </div>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ====== Helpers ====== */
+const $ = s => document.querySelector(s);
+const money = n => n.toLocaleString('ar-EG') + ' ' + CONFIG.currency;
+const isImg = v => v && v.trim() !== '';
+let cart = {};          // key -> {key,id,name,size,price,qty}
+let activeCat = 'الكل';
+
+/* ====== Static content ====== */
+document.title = CONFIG.name + ' | اطلب دلوقتي';
+$('#brand').textContent = CONFIG.name;
+$('#foot').textContent = CONFIG.name;
+$('#year').textContent = new Date().getFullYear();
+$('#heroName').textContent = CONFIG.name;
+$('#heroSlogan').textContent = CONFIG.slogan;
+$('#heroDesc').textContent = CONFIG.description;
+$('#addr').textContent = CONFIG.address;
+$('#hours').textContent = CONFIG.hours;
+if (isImg(CONFIG.logo)) $('#logoWrap').innerHTML = `<img src="${CONFIG.logo}" alt="">`;
+if (isImg(CONFIG.mapLink)) { $('#mapA').href = CONFIG.mapLink; $('#mapA').textContent = '🗺️ افتح على الخريطة'; }
+$('#phones').innerHTML = CONFIG.phones.map(p =>
+  `<small style="color:var(--muted)">${p.label}</small><a class="num" href="tel:${p.number}">${p.number}</a>`).join('');
+$('#fabWa').href = `https://wa.me/${CONFIG.whatsapp}`;
+$('#fabCall').href = `tel:${CONFIG.phones[0]?.number || ''}`;
+
+/* ====== Build 3D pizza ====== */
+function cssPizzaBuild(){
+  const p = $('#pizza');
+  let h = '<div class="shadow"></div>';
+  for (let i = 0; i < 12; i++) h += `<div class="layer crust" style="transform:translateZ(${i*1.6}px)"></div>`;
+  h += `<div class="layer sauce" style="transform:translateZ(20px)"></div>`;
+  h += `<div class="layer cheese" style="transform:translateZ(21.5px)"></div>`;
+  const rnd = (a,b)=>a+Math.random()*(b-a);
+  const place = (cls,n,z,rMin,rMax) => {
+    for (let i=0;i<n;i++){
+      const ang = (i/n)*Math.PI*2 + rnd(-.4,.4), r = rnd(rMin,rMax);
+      const x = 50 + Math.cos(ang)*r, y = 50 + Math.sin(ang)*r;
+      h += `<div class="top ${cls}" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%) translateZ(${z+rnd(0,2)}px) rotate(${rnd(0,180)}deg)"></div>`;
+    }
+  };
+  place('pep',7,24,12,31);
+  place('pep',2,24,0,6);
+  place('olive',9,24,8,34);
+  place('pepper',8,23,6,33);
+  p.innerHTML = h;
+}
+
+/* ====== 3D pizza: auto spin + drag ====== */
+function cssPizzaControl(){
+  const scene = $('#scene'), pizza = $('#pizza');
+  let rx = 55, rz = 0, vz = .35, dragging = false, lx = 0, ly = 0;
+  const apply = () => { pizza.style.setProperty('--rx', rx+'deg'); pizza.style.setProperty('--rz', rz+'deg'); };
+  const down = e => { dragging = true; lx = e.clientX; ly = e.clientY; scene.setPointerCapture?.(e.pointerId); };
+  const move = e => {
+    if (!dragging) return;
+    rz += (e.clientX - lx) * .6;
+    rx = Math.min(80, Math.max(20, rx - (e.clientY - ly) * .3));
+    lx = e.clientX; ly = e.clientY;
+  };
+  const up = () => dragging = false;
+  scene.addEventListener('pointerdown', down);
+  scene.addEventListener('pointermove', move);
+  scene.addEventListener('pointerup', up);
+  scene.addEventListener('pointerleave', up);
+  (function loop(){ if (!dragging) rz += vz; apply(); requestAnimationFrame(loop); })();
+}
+
+/* ====== Realistic 3D pizza (Three.js) ====== */
+function threePizza(){
+  if (typeof THREE === 'undefined') return false;
+  const host = $('#scene');
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    const cv = renderer.domElement;
+    cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
+
+    const R = 3;
+    const photo = isImg(CONFIG.pizzaImage);
+
+    /* --- seeded random so the pizza looks the same every load --- */
+    let seed = 11;
+    const rnd = (a = 0, b = 1) => {
+      seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return a + (b - a) * (((t ^ (t >>> 14)) >>> 0) / 4294967296);
+    };
+    const pick = arr => arr[(rnd(0, arr.length)) | 0];
+    const blob = (g, x, y, r, col, a) => { g.globalAlpha = a; g.fillStyle = col; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); g.globalAlpha = 1; };
+    const inDisc = rad => { const a = rnd(0, 6.2832), d = Math.sqrt(rnd()) * rad; return [Math.cos(a) * d, Math.sin(a) * d]; };
+    const mk = (w, h, fn) => {
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      fn(c.getContext('2d'), w, h);
+      const t = new THREE.CanvasTexture(c); t.anisotropy = 8; t.encoding = THREE.sRGBEncoding; return t;
+    };
+
+    /* --- top texture: sauce + melted cheese + browning + cut lines --- */
+    const topTex = mk(1024, 1024, (g, w) => {
+      const c = w / 2;
+      g.translate(c, c);
+      g.beginPath(); g.arc(0, 0, c, 0, 7); g.clip();
+      g.fillStyle = '#d9964a'; g.fillRect(-c, -c, w, w);
+      blob(g, 0, 0, c * .93, '#b3201b', 1);
+      for (let i = 0; i < 500; i++) { const [x, y] = inDisc(c * .9); blob(g, x, y, rnd(8, 40), pick(['#8f1511', '#d63a2a']), .25); }
+      const cheese = ['#f7d774', '#f3c95a', '#fbe79a', '#efb94a', '#f9dd85'];
+      for (let i = 0; i < 1500; i++) { const [x, y] = inDisc(c * .88); blob(g, x, y, rnd(14, 52), pick(cheese), .55); }
+      for (let i = 0; i < 24; i++) { const [x, y] = inDisc(c * .78); blob(g, x, y, rnd(8, 22), '#b3201b', .5); }
+      for (let i = 0; i < 150; i++) { const [x, y] = inDisc(c * .85); blob(g, x, y, rnd(6, 22), '#c4772a', .3); }
+      for (let i = 0; i < 70; i++)  { const [x, y] = inDisc(c * .85); blob(g, x, y, rnd(3, 9), '#8c4a16', .28); }
+      for (let i = 0; i < 280; i++) { const [x, y] = inDisc(c * .88); blob(g, x, y, rnd(2, 8), '#fff6c8', .18); }
+      for (let i = 0; i < 80; i++)  { const [x, y] = inDisc(c * .85); blob(g, x, y, rnd(2, 4), '#3f7d2a', .8); }
+      g.globalAlpha = .4; g.strokeStyle = '#4a2a0c'; g.lineWidth = 3;
+      for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 + Math.PI / 8; g.beginPath(); g.moveTo(0, 0); g.lineTo(Math.cos(a) * c * .93, Math.sin(a) * c * .93); g.stroke(); }
+      g.globalAlpha = 1;
+    });
+
+    /* --- crust texture (tileable horizontally) --- */
+    const crustTex = mk(512, 256, (g, w, h) => {
+      const gr = g.createLinearGradient(0, 0, 0, h);
+      gr.addColorStop(0, '#d99a4b'); gr.addColorStop(.5, '#e8b05e'); gr.addColorStop(1, '#c98a3d');
+      g.fillStyle = gr; g.fillRect(0, 0, w, h);
+      const wb = (x, y, r, col, a) => { [0, -w, w].forEach(o => blob(g, x + o, y, r, col, a)); };
+      for (let i = 0; i < 260; i++) wb(rnd(0, w), rnd(0, h), rnd(3, 16), '#8a4b1a', .28);
+      for (let i = 0; i < 120; i++) wb(rnd(0, w), rnd(0, h), rnd(2, 7), '#6b3410', .35);
+      for (let i = 0; i < 220; i++) wb(rnd(0, w), rnd(0, h), rnd(1, 4), '#f8e0a8', .5);
+    });
+    crustTex.wrapS = crustTex.wrapT = THREE.RepeatWrapping; crustTex.repeat.set(5, 1);
+
+    /* --- pepperoni texture --- */
+    const pepTex = mk(256, 256, (g, w, h) => {
+      const gr = g.createLinearGradient(0, h, 0, 0);
+      gr.addColorStop(0, '#c63d2b'); gr.addColorStop(.7, '#a82a1c'); gr.addColorStop(1, '#6e1a10');
+      g.fillStyle = gr; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 120; i++) blob(g, rnd(0, w), rnd(0, h), rnd(2, 7), '#f2a07a', .45);
+      for (let i = 0; i < 100; i++) blob(g, rnd(0, w), rnd(0, h), rnd(2, 6), '#4d0f08', .4);
+    });
+
+    /* --- scene --- */
+    const sc = new THREE.Scene();
+    sc.add(new THREE.HemisphereLight(0xfff0dd, 0x40250f, .75));
+    const key = new THREE.DirectionalLight(0xfff1d6, 1.5);
+    key.position.set(-5, 9, 5); key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    Object.assign(key.shadow.camera, { left:-5, right:5, top:5, bottom:-5, near:1, far:25 });
+    key.shadow.bias = -.0005; key.shadow.normalBias = .02;
+    sc.add(key);
+    const rim = new THREE.PointLight(0xff8a3d, .9, 30); rim.position.set(6, 3, -5); sc.add(rim);
+
+    const pz = new THREE.Group(); sc.add(pz);
+
+    // base disc (top = cheese/sauce, side = crust)
+    const topMat = new THREE.MeshPhysicalMaterial({ map: topTex, bumpMap: photo ? null : topTex, bumpScale: 1.2, roughness: .5, clearcoat: .25, clearcoatRoughness: .45 });
+    const crustMat = new THREE.MeshStandardMaterial({ map: crustTex, bumpMap: crustTex, bumpScale: 2, roughness: .85 });
+    const botMat = new THREE.MeshStandardMaterial({ color: 0xd8a35a, roughness: 1 });
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(R, R, .3, 96, 1), [crustMat, topMat, botMat]);
+    base.position.y = -.15; base.receiveShadow = true; base.castShadow = true; pz.add(base);
+
+    // everything that is "detail" (raised crust, cuts, toppings)
+    const detail = new THREE.Group(); detail.visible = !photo; pz.add(detail);
+
+    const ringGeo = new THREE.TorusGeometry(R - .2, .26, 24, 128); ringGeo.rotateX(Math.PI / 2); ringGeo.scale(1, .65, 1);
+    const ring = new THREE.Mesh(ringGeo, crustMat); ring.position.y = .02; ring.castShadow = ring.receiveShadow = true; detail.add(ring);
+
+    const cutMat = new THREE.MeshStandardMaterial({ color: 0x5a3414, roughness: 1 });
+    for (let i = 0; i < 8; i++) {
+      const a = i * Math.PI / 4 + Math.PI / 8;
+      const cut = new THREE.Mesh(new THREE.BoxGeometry(.035, .24, .5), cutMat);
+      cut.position.set(Math.cos(a) * (R - .2), .04, Math.sin(a) * (R - .2)); cut.rotation.y = -a; detail.add(cut);
+    }
+
+    /* --- toppings --- */
+    const placed = [];
+    const spot = (r, minR, maxR) => {
+      for (let k = 0; k < 120; k++) {
+        const a = rnd(0, 6.283), d = Math.sqrt(rnd(minR * minR, maxR * maxR));
+        const x = Math.cos(a) * d, z = Math.sin(a) * d;
+        if (placed.every(p => Math.hypot(p.x - x, p.z - z) >= (p.r + r) * .9)) { placed.push({ x, z, r }); return [x, z]; }
+      }
+      return null;
+    };
+    const put = (mesh, p, y) => {
+      if (!p) return;
+      mesh.position.set(p[0], y, p[1]); mesh.rotation.y = rnd(0, 6.283);
+      mesh.castShadow = mesh.receiveShadow = true; detail.add(mesh);
+    };
+
+    const pepMat = new THREE.MeshStandardMaterial({ map: pepTex, bumpMap: pepTex, bumpScale: 1.5, roughness: .38, metalness: .05, side: THREE.DoubleSide });
+    const pepGeo = r => {
+      const pts = [], n = 14;
+      for (let i = 0; i <= n; i++) { const t = i / n; pts.push(new THREE.Vector2(r * t + .0001, .035 + .1 * t * t * t)); }
+      pts.push(new THREE.Vector2(r, 0));
+      return new THREE.LatheGeometry(pts, 40);
+    };
+    for (let i = 0; i < 9; i++) {
+      const r = rnd(.40, .48), m = new THREE.Mesh(pepGeo(r), pepMat);
+      put(m, spot(r, 0, 2.3), -.005);
+      m.rotation.x = rnd(-.05, .05); m.rotation.z = rnd(-.05, .05);
+    }
+
+    const mush = new THREE.Shape();
+    mush.moveTo(-.34, -.08); mush.absarc(0, -.08, .34, Math.PI, 0, true);
+    mush.lineTo(.12, -.08); mush.lineTo(.12, -.34); mush.lineTo(-.12, -.34); mush.lineTo(-.12, -.08); mush.closePath();
+    const mushGeo = new THREE.ExtrudeGeometry(mush, { depth: .06, bevelEnabled: false }); mushGeo.rotateX(-Math.PI / 2);
+    const mushMat = new THREE.MeshStandardMaterial({ color: 0xdcc8a4, roughness: .75 });
+    for (let i = 0; i < 6; i++) { const m = new THREE.Mesh(mushGeo, mushMat), s = rnd(.8, 1.1); m.scale.set(s, 1, s); put(m, spot(.32 * s, 0, 2.4), .0); }
+
+    const oliveGeo = new THREE.TorusGeometry(.13, .05, 10, 24); oliveGeo.rotateX(Math.PI / 2);
+    const oliveMat = new THREE.MeshStandardMaterial({ color: 0x1a1410, roughness: .35 });
+    for (let i = 0; i < 9; i++) put(new THREE.Mesh(oliveGeo, oliveMat), spot(.17, 0, 2.45), .045);
+
+    const pepperGeo = new THREE.TorusGeometry(.22, .04, 8, 20, Math.PI * 1.3); pepperGeo.rotateX(Math.PI / 2);
+    const pepperMat = new THREE.MeshStandardMaterial({ color: 0x3a9a3a, roughness: .45 });
+    for (let i = 0; i < 7; i++) put(new THREE.Mesh(pepperGeo, pepperMat), spot(.24, 0, 2.4), .04);
+
+    const leaf = new THREE.Shape();
+    leaf.moveTo(0, 0); leaf.bezierCurveTo(.28, .12, .3, .55, 0, .85); leaf.bezierCurveTo(-.3, .55, -.28, .12, 0, 0);
+    const leafGeo = new THREE.ExtrudeGeometry(leaf, { depth: .015, bevelEnabled: false }); leafGeo.rotateX(-Math.PI / 2);
+    const leafMat = new THREE.MeshStandardMaterial({ color: 0x2e7d32, roughness: .6, side: THREE.DoubleSide });
+    for (let i = 0; i < 5; i++) { const m = new THREE.Mesh(leafGeo, leafMat), s = rnd(.55, .75); m.scale.set(s, s, s); put(m, spot(.35 * s, 0, 2.2), .03); m.rotation.x = rnd(-.12, .12); }
+
+    /* photo mode: wrap a real top-down photo onto the disc */
+    if (photo) {
+      new THREE.TextureLoader().load(CONFIG.pizzaImage, tex => {
+        tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 8;
+        topMat.map = tex; topMat.bumpMap = null; topMat.needsUpdate = true;
+      }, undefined, () => { detail.visible = true; });
+    }
+
+    /* shadow on the "table" */
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity: .38 }));
+    floor.rotation.x = -Math.PI / 2; floor.position.y = -.31; floor.receiveShadow = true; sc.add(floor);
+
+    /* --- camera, drag, loop --- */
+    const camera = new THREE.PerspectiveCamera(32, 1, .1, 100);
+    let tilt = 52 * Math.PI / 180, spin = 0, dist = 15.5, dragging = false, lx = 0, ly = 0, visible = true;
+    const placeCam = () => { camera.position.set(0, Math.sin(tilt) * dist, Math.cos(tilt) * dist); camera.lookAt(0, 0, 0); };
+    const resize = () => {
+      const w = host.clientWidth || 400, h = host.clientHeight || 440;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      dist = Math.max(15.5, (7.8 / camera.aspect) / (2 * Math.tan(16 * Math.PI / 180)));
+    };
+    host.appendChild(cv);
+    resize();
+    window.addEventListener('resize', resize);
+    if (window.ResizeObserver) new ResizeObserver(resize).observe(host);
+
+    host.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; host.setPointerCapture && host.setPointerCapture(e.pointerId); });
+    host.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      spin += (e.clientX - lx) * .012;
+      tilt = Math.min(80 * Math.PI / 180, Math.max(22 * Math.PI / 180, tilt + (e.clientY - ly) * .006));
+      lx = e.clientX; ly = e.clientY;
+    });
+    const up = () => dragging = false;
+    host.addEventListener('pointerup', up); host.addEventListener('pointerleave', up);
+    new IntersectionObserver(es => visible = es[0].isIntersecting).observe(host);
+
+    (function loop(now) {
+      requestAnimationFrame(loop);
+      if (!visible) return;
+      if (!dragging) spin += .004;
+      pz.rotation.y = spin; pz.position.y = Math.sin(now / 900) * .08;
+      placeCam(); renderer.render(sc, camera);
+    })(performance.now());
+
+    $('#pizza').style.display = 'none';
+    host.querySelectorAll('.float').forEach(f => f.style.display = 'none');
+    return true;
+  } catch (err) {
+    console.warn('3D pizza fallback:', err);
+    try { renderer && renderer.dispose(); } catch (e) {}
+    return false;
+  }
+}
+if (!threePizza()) { cssPizzaBuild(); cssPizzaControl(); }
+
+/* ====== Menu ====== */
+function renderCats(){
+  const cats = ['الكل', ...new Set(CONFIG.menu.map(m => m.category))];
+  $('#cats').innerHTML = cats.map(c => `<button class="cat ${c===activeCat?'active':''}" data-c="${c}">${c}</button>`).join('');
+  document.querySelectorAll('.cat').forEach(b => b.onclick = () => { activeCat = b.dataset.c; renderCats(); renderMenu(); });
+}
+function renderMenu(){
+  const items = CONFIG.menu.filter(m => activeCat==='الكل' || m.category===activeCat);
+  $('#menuGrid').innerHTML = items.map(m => {
+    const sizes = m.sizes && m.sizes.length;
+    const price = sizes ? m.sizes[0].p : m.price;
+    return `
+    <div class="item reveal show" data-id="${m.id}">
+      <div class="item-img">${isImg(m.image) ? `<img loading="lazy" src="${m.image}" alt="${m.name}" onerror="this.replaceWith(document.createTextNode('${m.emoji||'🍕'}'))">` : (m.emoji||'🍕')}</div>
+      <div class="item-body">
+        <h3>${m.name}</h3>
+        <p>${m.desc||''}</p>
+        ${sizes ? `<div class="size-row">${m.sizes.map((s,i)=>`<label><input type="radio" name="sz${m.id}" value="${i}" ${i===0?'checked':''}><span>${s.n} • ${s.p}</span></label>`).join('')}</div>` : ''}
+        <div class="item-foot">
+          <span class="price">${sizes ? 'من ' : ''}${money(price)}</span>
+          <button class="add" onclick="addToCart(${m.id})">+ أضف</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  tiltCards();
+}
+
+/* 3D tilt on hover */
+function tiltCards(){
+  document.querySelectorAll('.item').forEach(c => {
+    c.addEventListener('mousemove', e => {
+      const r = c.getBoundingClientRect();
+      const x = (e.clientX - r.left)/r.width - .5, y = (e.clientY - r.top)/r.height - .5;
+      c.style.transform = `rotateY(${x*12}deg) rotateX(${-y*12}deg) translateY(-6px)`;
+    });
+    c.addEventListener('mouseleave', () => c.style.transform = '');
+  });
+}
+
+/* ====== Cart ====== */
+function addToCart(id){
+  const m = CONFIG.menu.find(x => x.id === id);
+  let size = '', price = m.price;
+  if (m.sizes && m.sizes.length){
+    const sel = document.querySelector(`input[name="sz${id}"]:checked`);
+    const s = m.sizes[sel ? +sel.value : 0];
+    size = s.n; price = s.p;
+  }
+  const key = id + '|' + size;
+  if (cart[key]) cart[key].qty++;
+  else cart[key] = { key, id, name:m.name, size, price, qty:1 };
+  saveCart(); renderCart(); toast('تمت الإضافة ✅ ' + m.name);
+  const b = $('#count'); b.animate([{transform:'scale(1.6)'},{transform:'scale(1)'}],{duration:300});
+}
+function changeQty(key, d){
+  if (!cart[key]) return;
+  cart[key].qty += d;
+  if (cart[key].qty <= 0) delete cart[key];
+  saveCart(); renderCart();
+}
+const subtotal = () => Object.values(cart).reduce((s,l)=>s+l.price*l.qty,0);
+const isDelivery = () => document.querySelector('input[name="mode"]:checked').value === 'delivery';
+
+function renderCart(){
+  const lines = Object.values(cart);
+  $('#count').textContent = lines.reduce((s,l)=>s+l.qty,0);
+  $('#cartBody').innerHTML = lines.length ? lines.map(l => `
+    <div class="line">
+      <div class="nm">${l.name}<small>${l.size||''}</small></div>
+      <div class="qty"><button onclick="changeQty('${l.key}',-1)">−</button><span>${l.qty}</span><button onclick="changeQty('${l.key}',1)">+</button></div>
+      <div class="lp">${money(l.price*l.qty)}</div>
+    </div>`).join('') : `<div class="empty">السلة فاضية 🍕<br>ضيف حاجة من المنيو</div>`;
+  $('#cartFoot').style.display = lines.length ? '' : 'none';
+  const sub = subtotal(), del = lines.length && isDelivery() ? CONFIG.deliveryFee : 0;
+  $('#sub').textContent = money(sub);
+  $('#del').textContent = del ? money(del) : (isDelivery() ? 'مجاناً' : '—');
+  $('#tot').textContent = money(sub + del);
+  $('#fAddr').style.display = isDelivery() ? '' : 'none';
+}
+function saveCart(){ try{ localStorage.setItem('pizza_cart', JSON.stringify(cart)); }catch(e){} }
+function loadCart(){ try{ cart = JSON.parse(localStorage.getItem('pizza_cart')) || {}; }catch(e){ cart = {}; } }
+function openCart(){ $('#drawer').classList.add('open'); $('#overlay').classList.add('open'); }
+function closeCart(){ $('#drawer').classList.remove('open'); $('#overlay').classList.remove('open'); }
+document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener('change', renderCart));
+
+function sendOrder(){
+  const lines = Object.values(cart);
+  const name = $('#fName').value.trim(), phone = $('#fPhone').value.trim(), addr = $('#fAddr').value.trim(), note = $('#fNote').value.trim();
+  const del = isDelivery();
+  const err = $('#err');
+  if (!lines.length) { err.textContent = 'السلة فاضية'; return; }
+  if (!name) { err.textContent = 'من فضلك اكتب اسمك'; return; }
+  if (!/^[0-9+\s-]{8,15}$/.test(phone)) { err.textContent = 'اكتب رقم موبايل صحيح'; return; }
+  if (del && !addr) { err.textContent = 'اكتب عنوان التوصيل'; return; }
+  err.textContent = '';
+  const fee = del ? CONFIG.deliveryFee : 0, total = subtotal() + fee;
+  let msg = `🍕 *طلب جديد - ${CONFIG.name}*\n\n`;
+  lines.forEach((l,i) => msg += `${i+1}. ${l.name}${l.size?' ('+l.size+')':''} × ${l.qty} = ${l.price*l.qty} ${CONFIG.currency}\n`);
+  msg += `\nالمجموع: ${subtotal()} ${CONFIG.currency}`;
+  if (del) msg += `\nالتوصيل: ${fee} ${CONFIG.currency}`;
+  msg += `\n*الإجمالي: ${total} ${CONFIG.currency}*\n\n`;
+  msg += `👤 الاسم: ${name}\n📱 الموبايل: ${phone}\n`;
+  msg += del ? `📍 العنوان: ${addr}\n🛵 توصيل\n` : `🏪 استلام من المحل\n`;
+  if (note) msg += `📝 ملاحظات: ${note}\n`;
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(()=>e.classList.remove('show'),1600); }
+
+/* ====== Gallery ====== */
+if (CONFIG.gallery && CONFIG.gallery.length){
+  $('#gallery').style.display = '';
+  $('#galGrid').innerHTML = CONFIG.gallery.map(src => `<div class="reveal"><img loading="lazy" src="${src}" alt=""></div>`).join('');
+} else { $('#galLink').style.display = 'none'; }
+
+/* ====== Scroll effects ====== */
+window.addEventListener('scroll', () => $('#nav').classList.toggle('scrolled', scrollY > 40));
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } }), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ====== Init ====== */
+loadCart(); renderCats(); renderMenu(); renderCart();
+</script>
+</body>
+</html>
