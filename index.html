@@ -29,7 +29,19 @@ nav.scrolled{background:rgba(37, 44, 37, 0.92);backdrop-filter:blur(10px);box-sh
 .cart-btn{background:var(--red);color:#fff;padding:9px 18px;border-radius:30px;font-weight:800;display:flex;gap:8px;align-items:center;transition:.2s}
 .cart-btn:hover{background:var(--orange);transform:scale(1.05)}
 .cart-count{background:var(--yellow);color:var(--dark);border-radius:50%;min-width:24px;height:24px;display:grid;place-items:center;font-size:.85rem}
-@media(max-width:760px){.nav-links{display:none}}
+@media(max-width:760px){
+  .nav-in { flex-wrap: wrap; }
+  .nav-links { 
+    order: 3; width: 100%; justify-content: center; 
+    gap: 16px; padding-top: 8px; font-size: 0.9rem;
+    border-top: 1px solid #ffffff1a;
+  }
+  .hero { padding-top: 135px; }
+  .scene { height: 300px; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .fab { bottom: 14px; inset-inline-start: 14px; }
+  .fab a { width: 48px; height: 48px; font-size: 1.3rem; }
+}
 
 /* ===== Hero ===== */
 .hero{min-height:100vh;display:flex;align-items:center;padding:110px 0 60px;position:relative;
@@ -575,7 +587,8 @@ function threePizza(){
     sc.add(new THREE.HemisphereLight(0xfff0dd, 0x40250f, .75));
     const key = new THREE.DirectionalLight(0xfff1d6, 1.5);
     key.position.set(-5, 9, 5); key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048);
+    const isMobile = window.innerWidth < 768;
+    key.shadow.mapSize.set(isMobile ? 512 : 2048, isMobile ? 512 : 2048);
     Object.assign(key.shadow.camera, { left:-5, right:5, top:5, bottom:-5, near:1, far:25 });
     key.shadow.bias = -.0005; key.shadow.normalBias = .02;
     sc.add(key);
@@ -739,7 +752,10 @@ function renderMenu(){
 }
 
 /* 3D tilt on hover */
+  /* 3D tilt on hover */
 function tiltCards(){
+  if (window.matchMedia("(pointer: coarse)").matches) return;
+  document.querySelectorAll('.item').forEach(c => {
   document.querySelectorAll('.item').forEach(c => {
     c.addEventListener('mousemove', e => {
       const r = c.getBoundingClientRect();
