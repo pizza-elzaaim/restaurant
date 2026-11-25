@@ -29,19 +29,7 @@ nav.scrolled{background:rgba(37, 44, 37, 0.92);backdrop-filter:blur(10px);box-sh
 .cart-btn{background:var(--red);color:#fff;padding:9px 18px;border-radius:30px;font-weight:800;display:flex;gap:8px;align-items:center;transition:.2s}
 .cart-btn:hover{background:var(--orange);transform:scale(1.05)}
 .cart-count{background:var(--yellow);color:var(--dark);border-radius:50%;min-width:24px;height:24px;display:grid;place-items:center;font-size:.85rem}
-@media(max-width:760px){
-  .nav-in { flex-wrap: wrap; }
-  .nav-links { 
-    order: 3; width: 100%; justify-content: center; 
-    gap: 16px; padding-top: 8px; font-size: 0.9rem;
-    border-top: 1px solid #ffffff1a;
-  }
-  .hero { padding-top: 135px; }
-  .scene { height: 300px; }
-  .menu-grid { grid-template-columns: 1fr; }
-  .fab { bottom: 14px; inset-inline-start: 14px; }
-  .fab a { width: 48px; height: 48px; font-size: 1.3rem; }
-}
+@media(max-width:760px){.nav-links{display:none}}
 
 /* ===== Hero ===== */
 .hero{min-height:100vh;display:flex;align-items:center;padding:110px 0 60px;position:relative;
@@ -186,15 +174,14 @@ const CONFIG = {
   pizzaImage: "",
 
   // رقم الواتساب اللي هيستقبل الطلبات (بالصيغة الدولية بدون + ولا أصفار) مثال مصر: 201001234567
-  whatsapp: "201140958234",
+  whatsapp: "01140958234",
 
   // أرقام التواصل (هتظهر في الموقع)
   phones: [
     { label: "خدمة التوصيل", number: "0235421110" },
     { label: "الفرع الرئيسي", number: "01223500377" },
     {label: "", number: "01121230188"},
-    {label: "", number: "01090772010"},
-    {label: "للشكاوي واتساب", number:"01140958234"}
+    {label: "", number: "01090772010"}
  
   ],
 
@@ -209,56 +196,60 @@ const CONFIG = {
   // الأقسام بتتعمل أوتوماتيك من حقل category
   // image: ضع مسار الصورة "images/margherita.jpg" أو رابط. لو فاضي هيظهر إيموجي.
   // sizes: اختياري، لو عايز أحجام بأسعار مختلفة
-   menu: [
-    { id:1, category:"بيتزا ايطالي", name:"مارجريتا", desc:"صوص طماطم، موزاريلا، ", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaR0uorsCkP9snM5bO5-m0kndvt91iIW6NxzjckF_Kjg&s=10", emoji:"🍕",
+  menu: [
+    { id:1, category:"بيتزا", name:"مارجريتا", desc:"صوص طماطم، موزاريلا، ", image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:70},{n:"وسط",p:85},{n:"كبير",p:140}] },
-    { id:2, category:"بيتزا ايطالي", name:"سجق ايطالي", desc:"سجق + خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjZxlE0ASFIt6T8eV2diZM_Wnqa4gM5SUYX8ADryN4Sg&s=10", emoji:"🍕",
+    { id:2, category:"بيتزا", name:"سجق ايطالي", desc:"سجق + خضار + جبنه", image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:75},{n:"وسط",p:100},{n:"كبير",p:140}] },
-    { id:3, category:"بيتزا ايطالي", name:"لحمه  ايطالي", desc:"لحمه بلدي + خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW2Y23kA3gs-fAEzD4jCFIbJOxM_L1Y7g1VVmJ4zBgiA&s=10", emoji:"🍕",
+    { id:3, category:"بيتزا", name:"لحمه  اطالي", desc:"لحمه بلدي + خضار + جبنه", image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:4, category:"بيتزا ايطالي", name:"فراخ   ايطالي", desc:"قطع فراخ،+خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI44sXrmci1vbfloitgC3wR1IA1mDTaezMxMJSPUVpiQ&s=10", emoji:"🍕",
+    { id:4, category:"بيتزا", name:"فراخ   اطالي", desc:"قطع فراخ،+خضار + جبنه", image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:5, category:"بيتزا شرقي", name:"سجق شرقي", desc:"سجق  +خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScBWJyuG0vQXZMcd5qH5vC-hXF7VfJR6CcRqdrfM3PyQ&s=10", emoji:"🍕",
+    { id:5, category:"بيتزا شرقي", name:"سجق شرقي", desc:"سجق اسكندراني +خضار + جبنه", image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:120}]},
-    { id:6,  category: "بيتزا ايطالي" , name: "سوسيس ايطالي", desc:"سوسيس+خضار+جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmnLcsDKSoP4z60uPk2--C43L8ybw3B2p4vGqhr7f58w&s=10", emoji:"🍕",
+    { id:6,  category: "بيتزا" , name: "سوسيس ايطالي", desc:"سوسيس+خضار+جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:7,  category: "بيتزا ايطالي" , name: "بسطرمه  ايطالي", desc:"بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQztEtTkeNoUhuBCHGbXwuZAuCk9t4dmpIEw88dd3jkBKdpsUvoAHt08xQ&s=10", emoji:"🍕",
+    { id:7,  category: "بيتزا" , name: "بسطرمه  اطالي", desc:"بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:8,  category: "بيتزا ايطالي" , name: "ميكس جبن ايطالي", desc:"موتزريلا + رومي + كيري + خضار" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgby-D1Gr8KS_UmaWmhmniv1TMG4s0RKh_hx1rpMAV2w&s=10", emoji:"🍕",
+    { id:8,  category: "بيتزا" , name: "ميكس جبن اطالي", desc:"موتزريلا + رومي + كيري + خضار" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:9,  category: "بيتزا ايطالي" , name: "الزعيم  ايطالي", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVCAudGx8YaRnKH0Qg_Cv-BjYJ740TYbHikGL6NtLe-A&s=10", emoji:"🍕",
+    { id:9,  category: "بيتزا" , name: "الزعيم  اطالي", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:10,  category: "بيتزا ايطالي" , name: "مشرم  ايطالي", desc:"مشرم + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG2GqNewCY9uSnjJsTIoCBSqVj963W5qLbkVRVRsC3YQ&s=10", emoji:"🍕",
+    { id:10,  category: "بيتزا" , name: "مشرم  اطالي", desc:"مشرم + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:11,  category: "بيتزا ايطالي" , name: "تونه ايطالي", desc:"تونه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjyQ8iaKsds31GXS3lKvjHR-neSmLWukTZ9pIdgLyT1g&s=10", emoji:"🍕",
+    { id:11,  category: "بيتزا" , name: "تونهاطالي", desc:"تونه + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:12,  category: "بيتزا ايطالي" , name: "ميكس   ايطالي", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE1AWeWRVY2WYl-2qfAXElTfaSMMLND0Wo4YL9re82nQ&s=10", emoji:"🍕",
+    { id:12,  category: "بيتزا" , name: "ميكس   اطالي", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:13,  category: "بيتزا ايطالي" , name: "بلوبيف ايطالي", desc:"بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd4HbPFPhvHhimu3jZN1d7izOe0yLZErmTCRZ3yARLww&s=10", emoji:"🍕",
+    { id:13,  category: "بيتزا" , name: "بلوبيف اطالي", desc:"بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:14,  category: "بيتزا ايطالي" , name: "فراخ رانش  ايطالي", desc:"قطع فراخ + صوص الرانش + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpGTjghqf-XkvGH4pdRw9c90Lvkk7kF_WdaIIfcHGQ2A&s=10", emoji:"🍕",
+    { id:14,  category: "بيتزا" , name: "فراخ رانش  اطالي", desc:"قطع فراخ + صوص الرانش + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:15,  category: "بيتزا ايطالي" , name: "فراخ باربيكيو  ايطالي", desc:"فراخ + صوص الباربيكيو + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyUeSCX8OcJOVN30fQwFx2v3fIjzpGvwyOoJCjRSBThw&s=10", emoji:"🍕",
+    { id:15,  category: "بيتزا" , name: "فراخ باربيكيو  اطالي", desc:"فراخ + صوص الباربيكيو + خضار + جبنه" , image:"", emoji:"🍕",
     sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:17, category:"بيتزا شرقي", name:"لحمه  شرقي", desc:"لحمه بلدي + خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRRwpZh0Ld9VGxAxUApdp0YTGDXvTTVlEFSr1kb82zJA&s=10", emoji:"🍕",
+    {   id:16, category:"بيتزا", name:"سجق اطالي", desc:"سجق + خضار + جبنه", image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:75},{n:"وسط",p:100},{n:"كبير",p:140}] },
+    { id:17, category:"بيتزا شرقي", name:"لحمه  شرقي/", desc:"لحمه بلدي + خضار + جبنه", image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:18, category:"بيتزا شرقي", name:"فراخ   شرقي", desc:"قطع فراخ،+خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
+    { id:18, category:"بيتزا شرقي", name:"فراخ   شرقي/", desc:"قطع فراخ،+خضار + جبنه", image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:20,  category: "بيتزا شرقي" , name: "سوسيس  شرقي", desc:"سوسيس+خضار+جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRqcENcu5SI3kMXLB-rI7fh_3rcdpUF72xayWwTklW0g&s=10", emoji:"🍕",
+    { id:19, category:"بيتزا شرقي", name:"سجق شرقي", desc:"سجق اسكندراني +خضار + جبنه", image:"", emoji:"🍕",
+      sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:120}]},
+    { id:20,  category: "بيتزا شرقي" , name: "سوسيس  شرقي/", desc:"سوسيس+خضار+جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:21,  category: "بيتزا شرقي" , name: "بسطرمه  شرقي", desc:"بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwbpPHPGZjGRE8DHxjqtEfBuMznh9AT36qq7dkQ_--Yg&s=10", emoji:"🍕",
+    { id:21,  category: "بيتزا شرقي" , name: "بسطرمه  شرقي/", desc:"بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:22,  category: "بيتزا شرقي" , name: "ميكس جبن   شرقي", desc:"موتزريلا + رومي + كيري + خضار" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR4IPE3UG_CCDWC6nvqRsrjNkFFi_IknDBzJft-CM_ZQ&s=10", emoji:"🍕",
+    { id:22,  category: "بيتزا شرقي" , name: "ميكس جبن   شرقي/", desc:"موتزريلا + رومي + كيري + خضار" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:23,  category: "بيتزا شرقي" , name: "الزعيم  شرقي", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEiD7lof4KKfiRjTodG3vJkXRXxuXvaNiVrnHqXCgwEQ&s=10", emoji:"🍕",
+    { id:23,  category: "بيتزا شرقي" , name: "الزعيم  شرقي/", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:24,  category: "بيتزا شرقي" , name: "مشرم  شرقي ", desc:"مشرم + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS62CYp2AhmFInE-HKgWRgHopJi47HtbYHzwRLwslXykw&s=10", emoji:"🍕",
+    { id:24,  category: "بيتزا شرقي" , name: "مشرم  شرقي ", desc:"مشرم + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:25,  category: "بيتزا شرقي" , name: "تونه  شرقي", desc:"تونه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwzHgN376MX_x4W2Y_8Gk8t6pPcWNaOpTvjWcSezJTwg&s=10", emoji:"🍕",
+    { id:25,  category: "بيتزا شرقي" , name: "تونه  شرقي/", desc:"تونه + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:26,  category: "بيتزا شرقي" , name: "ميكس   شرقي", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
+    { id:26,  category: "بيتزا شرقي" , name: "ميكس   شرقي/", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:27,  category: "بيتزا شرقي" , name: "بلوبيف  شرقي", desc:"بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6cixwIjPOsxSRV4Qd9Qid7yeqFYdZSxH9Ar48WIRIug&s", emoji:"🍕",
+    { id:27,  category: "بيتزا شرقي" , name: "بلوبيف  شرقي/", desc:"بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
     { id:30,  category: "فطير حلو" , name: "فطير ساده بالسكر", desc:"فطير بالسكر" , image:"", emoji:"🥞",
       sizes:[{n:"صغير",p:35},{n:"وسط",p:45},{n:"كبير",p:60}]},
@@ -320,11 +311,11 @@ const CONFIG = {
       sizes:[{n:"one size",p:65}]},
     { id:58,  category: "مكرونات" , name: "مكرونه نابولي", desc:" صوص + موتزريلا" , image:"", emoji:"🍝",
       sizes:[{n:"one size",p:50}]},  
-    { id:59,  category: "مكرونات" , name: "مكرونه فوتشي", desc:"+جبنه رومي+ صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:59,  category: "مكرونات  " , name: "مكرونه فوتشي", desc:"+جبنه رومي+ صوص + موتزريلا" , image:"", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
-    { id:60,  category: "مكرونات" , name: "مكرونه بلونيز", desc:" لحمه + صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:60,  category: "مكرونات  " , name: "مكرونه بلونيز", desc:" لحمه + صوص + موتزريلا" , image:"", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
-    { id:61,  category: "مكرونات" , name: "مكرونه ميامي", desc:"سجق + صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:61,  category: "مكرونات  " , name: "مكرونه ميامي", desc:"سجق + صوص + موتزريلا" , image:"", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
     { id:62,  category: "مكرونات" , name: "مكرونه نيجرسكو فراخ ", desc:"فراخ+ صوص + موتزريلا" , image:"", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
@@ -332,6 +323,7 @@ const CONFIG = {
       sizes:[{n:"one size",p:80}]},
     { id:64,  category: "مكرونات" , name: "مكرونه هوت دوج", desc:"سوسيس + صوص + موتزريلا" , image:"", emoji:"🍝",
       sizes:[{n:"one size",p:80}]},
+    { }  
      
   
   ]
@@ -403,7 +395,7 @@ const CONFIG = {
       <div class="c-card reveal"><div class="ic">🕒</div><h3>مواعيد العمل</h3><p id="hours"></p></div>
     </div>
   </div>
-  <footer>© <span id="year"></span> <span id="foot"></span> — كل الحقوق محفوظة لصانع الموقع عرابي</footer>
+  <footer>© <span id="year"></span> <span id="foot"></span> — لصانع الموقع عرابي كل الح قوق محفوظة</footer>
 </section>
 
 <!-- Floating buttons -->
@@ -587,8 +579,7 @@ function threePizza(){
     sc.add(new THREE.HemisphereLight(0xfff0dd, 0x40250f, .75));
     const key = new THREE.DirectionalLight(0xfff1d6, 1.5);
     key.position.set(-5, 9, 5); key.castShadow = true;
-    const isMobile = window.innerWidth < 768;
-    key.shadow.mapSize.set(isMobile ? 512 : 2048, isMobile ? 512 : 2048);
+    key.shadow.mapSize.set(2048, 2048);
     Object.assign(key.shadow.camera, { left:-5, right:5, top:5, bottom:-5, near:1, far:25 });
     key.shadow.bias = -.0005; key.shadow.normalBias = .02;
     sc.add(key);
@@ -752,10 +743,7 @@ function renderMenu(){
 }
 
 /* 3D tilt on hover */
-  /* 3D tilt on hover */
 function tiltCards(){
-  if (window.matchMedia("(pointer: coarse)").matches) return;
-  document.querySelectorAll('.item').forEach(c => {
   document.querySelectorAll('.item').forEach(c => {
     c.addEventListener('mousemove', e => {
       const r = c.getBoundingClientRect();
@@ -831,8 +819,7 @@ function sendOrder(){
   msg += `👤 الاسم: ${name}\n📱 الموبايل: ${phone}\n`;
   msg += del ? `📍 العنوان: ${addr}\n🛵 توصيل\n` : `🏪 استلام من المحل\n`;
   if (note) msg += `📝 ملاحظات: ${note}\n`;
-const waNumber = String(CONFIG.whatsapp).replace(/\D/g, '');
-window.open(`https://api.whatsapp.com/send?phone=${waNumber}&text=${encodeURIComponent(msg)}`, '_blank');
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(()=>e.classList.remove('show'),1600); }
