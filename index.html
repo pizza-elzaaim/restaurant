@@ -2,7 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050d12">
 <title>بيتزاالزعيم | اطلب دلوقتي</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
@@ -125,13 +126,13 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.9rem;border-
 /* Cart drawer */
 .overlay{position:fixed;inset:0;background:#000a;z-index:60;opacity:0;pointer-events:none;transition:.3s}
 .overlay.open{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(440px,100%);background:#1f150b;z-index:70;transform:translateX(-105%);transition:.4s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(440px,100%);background:#1f150b;z-index:70;transform:translateX(-105%);transition:.4s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 html[dir=rtl] .drawer{inset-inline-end:auto;left:0}
 .drawer.open{transform:none}
-.d-head{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff1a}
+.d-head{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff1a;position:sticky;top:0;background:#1f150b;z-index:2}
 .d-head h3{font-size:1.4rem}
 .close{background:transparent;color:var(--text);font-size:1.6rem}
-.d-body{flex:1;overflow:auto;padding:16px 20px}
+.d-body{flex:1 0 auto;padding:16px 20px}
 .empty{text-align:center;color:var(--muted);margin-top:40px;font-size:1.1rem}
 .line{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed #ffffff1a}
 .line .nm{flex:1}
@@ -155,6 +156,106 @@ html[dir=rtl] .drawer{inset-inline-end:auto;left:0}
 .err{color:#ff8080;font-size:.9rem;margin-top:6px;min-height:20px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translate(-50%,30px);background:var(--yellow);color:var(--dark);padding:10px 22px;border-radius:30px;font-weight:800;z-index:90;opacity:0;transition:.3s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* =====================================================
+   📱 تحسينات الموبايل
+   ===================================================== */
+html,body{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+html{overflow-x:hidden}
+.hero{overflow:hidden}   /* يمنع ظل البيتزا والإيموجي يطلعوا بره الشاشة ويعملوا سكرول بالعرض */
+section,header{scroll-margin-top:70px}
+body.lock{overflow:hidden}
+.menu-btn{display:none;background:transparent;color:var(--text);font-size:1.6rem;width:44px;height:44px;border-radius:12px;place-items:center}
+.mobile-menu{display:none}
+.cart-bar{display:none}
+.toast{max-width:90vw;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* إلغاء تأثيرات الـ hover على شاشات اللمس */
+@media(hover:none){
+  .item:hover .item-img img,.gallery div:hover img{transform:none}
+  .btn-primary:hover,.cart-btn:hover,.add:hover,.fab a:hover,.btn-ghost:hover{transform:none}
+  .btn-ghost:hover{background:transparent;color:var(--yellow)}
+  .item:hover{box-shadow:0 10px 30px #0006}
+}
+
+@media(max-width:760px){
+  /* Navbar + قائمة منسدلة */
+  nav{padding:8px 0}
+  nav.scrolled,nav.menu-open{background:rgba(20,22,20,.97)}
+  .menu-btn{display:grid}
+  .logo{font-size:1.15rem;gap:8px;flex:1;min-width:0}
+  .logo #brand{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .logo img{width:36px;height:36px}
+  .cart-btn{padding:8px 14px;font-size:.95rem}
+  .mobile-menu{display:flex;flex-direction:column;max-height:0;overflow:hidden;transition:max-height .3s ease}
+  nav.menu-open .mobile-menu{max-height:260px}
+  .mobile-menu a{padding:14px 4vw;font-weight:700;border-top:1px solid #ffffff14}
+  .mobile-menu a:active{background:#ffffff10}
+
+  /* Hero */
+  .hero{min-height:auto;padding:86px 0 30px}
+  .hero h1{font-size:clamp(2rem,9vw,2.6rem)}
+  .hero p{font-size:1rem;margin:12px auto 20px}
+  .hero-btns .btn{flex:1 1 140px;justify-content:center;padding:13px 18px;font-size:1rem}
+  .scene{height:300px}
+  .float{font-size:1.8rem}
+
+  /* Sections */
+  section{padding:50px 0}
+  .title{margin-bottom:20px}
+
+  /* الأقسام: شريط ثابت يتسحب بالعرض */
+  .cats{position:sticky;top:60px;z-index:20;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;
+    margin:0 -4vw 16px;padding:10px 4vw;background:var(--dark);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .cats::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 auto;padding:8px 18px;font-size:.95rem}
+
+  /* كروت المنيو: شكل أفقي مضغوط */
+  .menu-grid{grid-template-columns:1fr;gap:12px;perspective:none}
+  .item{display:grid;grid-template-columns:84px 1fr;border-radius:18px;transform:none!important}
+  .item-img{height:auto;font-size:2.6rem}
+  .item-body{padding:12px 14px;transform:none}
+  .item-body h3{font-size:1.05rem;line-height:1.4}
+  .item-body p{min-height:0;font-size:.85rem;line-height:1.5}
+  .size-row{gap:6px;margin-top:8px}
+  .size-row label{padding:8px 2px;font-size:.78rem}
+  .item-foot{margin-top:10px}
+  .price{font-size:1.1rem}
+  .add{padding:10px 18px}
+
+  /* Contact */
+  .c-card{padding:20px}
+  .c-card a.num{padding:4px 0}
+  footer{padding-bottom:100px}
+
+  /* الأزرار العائمة */
+  .fab{bottom:calc(16px + env(safe-area-inset-bottom));inset-inline-start:14px;gap:10px}
+  .fab a{width:50px;height:50px;font-size:1.4rem}
+  body.has-items .fab{bottom:calc(86px + env(safe-area-inset-bottom))}
+
+  /* شريط السلة تحت */
+  body.has-items .cart-bar{display:flex}
+  .cart-bar{position:fixed;inset-inline:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:45;align-items:center;justify-content:space-between;gap:10px;
+    background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;padding:14px 18px;border-radius:18px;font-weight:800;font-size:1rem;box-shadow:0 10px 30px #0009;width:auto}
+  .cart-bar .cb-count{background:#fff;color:var(--dark);border-radius:20px;padding:0 10px;margin-inline-start:6px}
+  .toast{bottom:calc(150px + env(safe-area-inset-bottom))}
+
+  /* السلة */
+  .drawer{width:100%}
+  .d-head{padding:12px 16px}
+  .close{width:44px;height:44px}
+  .d-body{padding:12px 16px;min-height:120px}
+  .qty button{width:36px;height:36px}
+  .line .lp{min-width:64px;font-size:.95rem}
+  .d-foot{padding:14px 16px calc(16px + env(safe-area-inset-bottom))}
+  .mode label{padding:10px 6px;font-size:.92rem}
+}
+
+@media(max-width:380px){
+  .cart-btn .cart-txt{display:none}
+  .size-row label{font-size:.72rem}
+  .item{grid-template-columns:70px 1fr}
+}
 </style>
 </head>
 <body>
@@ -166,8 +267,10 @@ html[dir=rtl] .drawer{inset-inline-end:auto;left:0}
 const CONFIG = {
   name: "بيتزا الزعيم",
   slogan: "اصل البيتزا في مصر خبره 34سنه",
-  description: "عجينة طازة، جبنة موزاريلا حقيقية، وطعم يخليك تطلب تاني. اطلب دلوقتي وإحنا بنوصلك سخنة لحد باب البيت.  الموقع ده معمول عشان تسهّل عليك    (منيو)    الطلب، لو حابب ممكن تكلمنا على الأرقام اللي تحت.",
-  logo: "c:\Users\oraby\Pictures\images.jpg",            // مثال: "images/logo.png"  (سيبها فاضية لو مفيش)
+  description: "عجينة طازة، جبنة موزاريلا حقيقية، وطعم يخليك تطلب تاني. اطلب دلوقتي وإحنا بنوصلك سخنة لحد باب البيت. ",
+  // ⚠️ مسار زي c:\Users\... مش هيشتغل على الموبايل ولا أونلاين.
+  // حط صورة اللوجو جنب ملف index.html وسمّيها images.jpg (أو غيّر الاسم هنا). لو مش موجودة هيظهر 🍕
+  logo: "images.jpg",
 
   // اختياري: صورة بيتزا حقيقية متصورة من فوق (مربعة والبيتزا مالية الصورة) عشان تتلصق على المجسم 3D.
   // لو سيبتها فاضية هيستخدم البيتزا المرسومة تلقائياً. (بتشتغل بس لما الموقع يتنشر أونلاين، مش من الملف المحلي)
@@ -187,8 +290,7 @@ const CONFIG = {
 
   address:  "  40   شارع ترعه السواحل الوراق ناصيه شارع المسبك",
   hours: "24 ساعة / 7 أيام",
-  mapLink: "36X8+9X",         // اختياري: رابط الموقع على جوجل ماب
-  mapLink: "36X8+9X قسم الوراق",         // اختياري: رابط الموقع على جوجل ماب
+  mapLink: "36X8+9X قسم الوراق",         // اختياري: رابط جوجل ماب أو كود Plus Code (بيتحول لرابط تلقائياً)
 
   currency: "ج.م",
   deliveryFee: 20,     // رسوم التوصيل (0 = مجاناً)
@@ -197,131 +299,127 @@ const CONFIG = {
   // image: ضع مسار الصورة "images/margherita.jpg" أو رابط. لو فاضي هيظهر إيموجي.
   // sizes: اختياري، لو عايز أحجام بأسعار مختلفة
   menu: [
-    { id:1, category:"بيتزا ايطالي", name:"مارجريتا", desc:"صوص طماطم، موزاريلا، ", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7gQORF59Mqsm0hZDYA-XTrGavOyQNaMW4xXtWuqSCDg&s=10", emoji:"🍕",
+    { id:1, category:"بيتزا ايطالي", name:"مارجريتا", desc:"صوص طماطم + موزاريلا", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:70},{n:"وسط",p:85},{n:"كبير",p:140}] },
-    { id:2, category:"بيتزا ايطالي", name:"سجق ايطالي", desc:"سجق + خضار + جبنه", image:"", emoji:"🍕",
+    { id:2, category:"بيتزا ايطالي", name:"سجق ايطالي", desc:"سجق + خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:75},{n:"وسط",p:100},{n:"كبير",p:140}] },
-    { id:3, category:"بيتزا ايطالي", name:"لحمه  ايطالي", desc:"لحمه بلدي + خضار + جبنه", image:"", emoji:"🍕",
+    { id:3, category:"بيتزا ايطالي", name:"لحمه  ايطالي", desc:"لحمه بلدي + خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:4, category:"بيتزا ايطالي", name:"فراخ   ايطالي", desc:"قطع فراخ،+خضار + جبنه", image:"", emoji:"🍕",
+    { id:4, category:"بيتزا ايطالي", name:"فراخ   ايطالي", desc:"قطع فراخ،+خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:5, category:"بيتزا شرقي", name:"سجق شرقي", desc:"سجق اسكندراني +خضار + جبنه", image:"", emoji:"🍕",
-      sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:120}]},
-    { id:6,  category: "بيتزا ايطالي" , name: "سوسيس ايطالي", desc:"سوسيس+خضار+جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGLK3tzc__GDzjZqczKvzKitQznTXz4CaIZZCud20jOA&s=10", emoji:"🍕",
+    { id:6,  category: "بيتزا ايطالي" , name: "سوسيس ايطالي", desc:"سوسيس+خضار+جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:7,  category: "بيتزا ايطالي" , name: "بسطرمه  ايطالي", desc:"بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:7,  category: "بيتزا ايطالي" , name: "بسطرمه  ايطالي", desc:"بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:8,  category: "بيتزا ايطالي" , name: "ميكس جبن ايطالي", desc:"موتزريلا + رومي + كيري + خضار" , image:"", emoji:"🍕",
+    { id:8,  category: "بيتزا ايطالي" , name: "ميكس جبن ايطالي", desc:"موتزريلا + رومي + كيري + خضار" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:9,  category: "بيتزا ايطالي" , name: "الزعيم  ايطالي", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:9,  category: "بيتزا ايطالي" , name: "الزعيم  ايطالي", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:10,  category: "بيتزا ايطالي" , name: "مشرم  ايطالي", desc:"مشرم + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:10,  category: "بيتزا ايطالي" , name: "مشرم  ايطالي", desc:"مشرم + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:11,  category: "بيتزا ايطالي" , name: "تونه ايطالي", desc:"تونه + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:11,  category: "بيتزا ايطالي" , name: "تونه ايطالي", desc:"تونه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:12,  category: "بيتزا ايطالي" , name: "ميكس   ايطالي", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:12,  category: "بيتزا ايطالي" , name: "ميكس   ايطالي", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:13,  category: "بيتزا ايطالي" , name: "بلوبيف ايطالي", desc:"بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:13,  category: "بيتزا ايطالي" , name: "بلوبيف ايطالي", desc:"بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReVDKQff6PdKkOTxihJ3cf4lZCKFytGh1SJylGfW_WKA&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:14,  category: "بيتزا ايطالي" , name: "فراخ رانش  ايطالي", desc:"قطع فراخ + صوص الرانش + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:14,  category: "بيتزا ايطالي" , name: "فراخ رانش  ايطالي", desc:"قطع فراخ + صوص الرانش + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpGTjghqf-XkvGH4pdRw9c90Lvkk7kF_WdaIIfcHGQ2A&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:15,  category: "بيتزا ايطالي" , name: "فراخ باربيكيو  ايطالي", desc:"فراخ + صوص الباربيكيو + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:15,  category: "بيتزا ايطالي" , name: "فراخ باربيكيو  ايطالي", desc:"فراخ + صوص الباربيكيو + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyUeSCX8OcJOVN30fQwFx2v3fIjzpGvwyOoJCjRSBThw&s=10", emoji:"🍕",
     sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    {   id:16, category:"بيتزا ايطالي", name:"سجق ايطالي", desc:"سجق + خضار + جبنه", image:"", emoji:"🍕",
-      sizes:[{n:"صغير",p:75},{n:"وسط",p:100},{n:"كبير",p:140}] },
-    { id:17, category:"بيتزا شرقي", name:"لحمه  شرقي/", desc:"لحمه بلدي + خضار + جبنه", image:"", emoji:"🍕",
+    { id:16, category:"بيتزا شرقي", name:"لحمه  شرقي/", desc:"لحمه بلدي + خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:18, category:"بيتزا شرقي", name:"فراخ   شرقي/", desc:"قطع فراخ،+خضار + جبنه", image:"", emoji:"🍕",
+    { id:17, category:"بيتزا شرقي", name:"فراخ   شرقي/", desc:"قطع فراخ，+خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}] },
-    { id:19, category:"بيتزا شرقي", name:"سجق شرقي", desc:"سجق اسكندراني +خضار + جبنه", image:"", emoji:"🍕",
+    { id:18, category:"بيتزا شرقي", name:"سجق شرقي", desc:"سجق اسكندراني +خضار + جبنه", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:120}]},
-    { id:20,  category: "بيتزا شرقي" , name: "سوسيس  شرقي/", desc:"سوسيس+خضار+جبنه" , image:"", emoji:"🍕",
+    { id:19,  category: "بيتزا شرقي" , name: "سوسيس  شرقي/", desc:"سوسيس+خضار+جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:21,  category: "بيتزا شرقي" , name: "بسطرمه  شرقي/", desc:"بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:20,  category: "بيتزا شرقي" , name: "بسطرمه  شرقي/", desc:"بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]}, 
-    { id:22,  category: "بيتزا شرقي" , name: "ميكس جبن   شرقي/", desc:"موتزريلا + رومي + كيري + خضار" , image:"", emoji:"🍕",
+    { id:21,  category: "بيتزا شرقي" , name: "ميكس جبن   شرقي/", desc:"موتزريلا + رومي + كيري + خضار" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:23,  category: "بيتزا شرقي" , name: "الزعيم  شرقي/", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:22,  category: "بيتزا شرقي" , name: "الزعيم  شرقي/", desc:"لحمه + سجق + بسطرمه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEiD7lof4KKfiRjTodG3vJkXRXxuXvaNiVrnHqXCgwEQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:24,  category: "بيتزا شرقي" , name: "مشرم  شرقي ", desc:"مشرم + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:23,  category: "بيتزا شرقي" , name: "مشرم  شرقي ", desc:"مشرم + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:25,  category: "بيتزا شرقي" , name: "تونه  شرقي/", desc:"تونه + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:24,  category: "بيتزا شرقي" , name: "تونه  شرقي/", desc:"تونه + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:26,  category: "بيتزا شرقي" , name: "ميكس   شرقي/", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:25,  category: "بيتزا شرقي" , name: "ميكس   شرقي/", desc:"سوسيس +فراخ + بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:95},{n:"وسط",p:125},{n:"كبير",p:170}]},
-    { id:27,  category: "بيتزا شرقي" , name: "بلوبيف  شرقي/", desc:"بلوبيف + خضار + جبنه" , image:"", emoji:"🍕",
+    { id:26,  category: "بيتزا شرقي" , name: "بلوبيف  شرقي/", desc:"بلوبيف + خضار + جبنه" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8Aw0ozPRbhYnrpAqtOx5TMWoEevA-McY_pxtCINrZQ&s=10", emoji:"🍕",
       sizes:[{n:"صغير",p:85},{n:"وسط",p:115},{n:"كبير",p:150}]},
-    { id:30,  category: "فطير حلو" , name: "فطير ساده بالسكر", desc:"فطير بالسكر" , image:"", emoji:"🥞",
+    { id:27,  category: "فطير حلو" , name: "فطير ساده بالسكر", desc:"فطير بالسكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:35},{n:"وسط",p:45},{n:"كبير",p:60}]},
-    { id:31,  category: "فطير حلو" , name: "فطير بالبسبوس", desc:"بسبوسه + سكر" , image:"", emoji:"🥞",
+    { id:28,  category: "فطير حلو" , name: "فطير بالبسبوس", desc:"بسبوسه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:40},{n:"وسط",p:55},{n:"كبير",p:70}]},
-    { id:32,  category: "فطير حلو" , name: "فطير بالنوتيلا", desc:"كاستير + نوتيلا" , image:"", emoji:"🥞",
+    { id:29,  category: "فطير حلو" , name: "فطير بالنوتيلا", desc:"كاستير + نوتيلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:120}]},
-    { id:33,  category: "فطير حلو" , name: "فطير بالكنافه", desc:"كنافه + سكر" , image:"", emoji:"🥞",
+    { id:30,  category: "فطير حلو" , name: "فطير بالكنافه", desc:"كنافه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:40},{n:"وسط",p:55},{n:"كبير",p:70}]},
-    { id:34,  category: "فطير حلو" , name: "فطير باكاستير", desc:"كاستير + سكر" , image:"", emoji:"🥞",
+    { id:31,  category: "فطير حلو" , name: "فطير باكاستير", desc:"كاستير + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10 ", emoji:"🥞",
       sizes:[{n:"صغير",p:40},{n:"وسط",p:55},{n:"كبير",p:70}]},
-    { id:35,  category: "فطير حلو" , name: "مشكل حلو", desc:"بسبوسه + كنافه + كاستير + سكر" , image:"", emoji:"🥞",
+    { id:32,  category: "فطير حلو" , name: "مشكل حلو", desc:"بسبوسه + كنافه + كاستير + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:55},{n:"وسط",p:70},{n:"كبير",p:85}]},
-    { id:36,  category: "فطير حلو" , name: "فطير بالكاستير و البسبوسه", desc:"كاستير + بسبوسه + سكر" , image:"", emoji:"🥞",
+    { id:33,  category: "فطير حلو" , name: "فطير بالكاستير و البسبوسه", desc:"كاستير + بسبوسه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:45},{n:"وسط",p:55},{n:"كبير",p:70}]},
-    { id:23,  category: "فطير حلو" , name: "فطير بالكاستير و الكنافه", desc:"كاستير + كنافه + سكر" , image:"", emoji:"🥞",
+    { id:34,  category: "فطير حلو" , name: "فطير بالكاستير و الكنافه", desc:"كاستير + كنافه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:45},{n:"وسط",p:55},{n:"كبير",p:70}]},
-    { id:37,  category: "فطير حلو" , name: "فطير بالبسويه و الكنافه", desc:"بسويه + كنافه + سكر" , image:"", emoji:"🥞",
+    { id:35,  category: "فطير حلو" , name: "فطير بالبسويه و الكنافه", desc:"بسويه + كنافه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:50},{n:"وسط",p:65},{n:"كبير",p:80}]},
-    { id:38,  category: "فطير حلو" , name: "فطير بالكاستير و المكسرات", desc:"كاستير + مكسرات + سكر" , image:"", emoji:"🥞",
+    { id:36,  category: "فطير حلو" , name: "فطير بالكاستير و المكسرات", desc:"كاستير + مكسرات + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:50},{n:"وسط",p:65},{n:"كبير",p:80}]},
-    { id:39,  category: "فطير حلو" , name: "فطير سكر و لبن", desc:"سكر + لبن" , image:"", emoji:"🥞",
+    { id:37,  category: "فطير حلو" , name: "فطير سكر و لبن", desc:"سكر + لبن" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:45},{n:"وسط",p:65},{n:"كبير",p:85}]},
-    { id:40,  category: "فطير بالقشطه " , name: "فطير قشطه و سكر", desc:"قشطه + سكر" , image:"", emoji:"🥞",
+    { id:38,  category: "فطير بالقشطه " , name: "فطير قشطه و سكر", desc:"قشطه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:55},{n:"وسط",p:70},{n:"كبير",p:85}]},
-    { id:41,  category: "فطير بالقشطه " , name: "فطير قشطه و العسل", desc:"قشطه + عسل" , image:"", emoji:"🥞",
+    { id:39,  category: "فطير بالقشطه " , name: "فطير قشطه و العسل", desc:"قشطه + عسل" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:95}]},
-    { id:42,  category: "فطير بالقشطه " , name: "فطير قشطه و المكسرات", desc:"قشطه + مكسرات + سكر" , image:"", emoji:"🥞",
+    { id:40,  category: "فطير بالقشطه " , name: "فطير قشطه و المكسرات", desc:"قشطه + مكسرات + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:85}]},
-    { id:43,  category: "فطير بالقشطه " , name: "فطير قشطه و الكنافه", desc:"قشطه + كنافه + سكر" , image:"", emoji:"🥞",
+    { id:41,  category: "فطير بالقشطه " , name: "فطير قشطه و الكنافه", desc:"قشطه + كنافه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:90}]},
-    { id:44,  category: "فطير بالقشطه " , name: "فطير قشطه و البسبوسه", desc:"قشطه + بسبوسه + سكر" , image:"", emoji:"🥞",
+    { id:42,  category: "فطير بالقشطه " , name: "فطير قشطه و البسبوسه", desc:"قشطه + بسبوسه + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:55},{n:"وسط",p:75},{n:"كبير",p:90}]},
-    { id:45,  category: "فطير بالقشطه " , name: "فطير قشطه و lvfn", desc:"قشطه + مربى + سكر" , image:"", emoji:"🥞",
+    { id:43,  category: "فطير بالقشطه " , name: "فطير قشطه و مربى", desc:"قشطه + مربى + سكر" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa09jlW6fITkFAhDMkqhmgOJsg6oZxBWAVw4R8zFB5fA&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:65},{n:"وسط",p:85},{n:"كبير",p:110}]},
-    { id:46,  category: "فطير بالقشطه " , name: "فطير مشلتت بالسمن البلدي", desc:"فطير مشلتت بالسمن البلدي" , image:"", emoji:"🥞",
+    { id:44,  category: "فطير بالقشطه " , name: "فطير مشلتت بالسمن البلدي", desc:"فطير مشلتت بالسمن البلدي" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROgMSsEGlgglWCBAc-Abyny9EfVqXHE0vdb27WiDpvSw&s=10", emoji:"🥞",
       sizes:[{n:"صغير",p:80},{n:"وسط",p:100},{n:"كبير",p:130}]},   
-    { id:47,  category: "كريبات" , name: "كريب بطاطس", desc:"بطاطس + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:45,  category: "كريبات" , name: "كريب بطاطس", desc:"بطاطس + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:30}]}, 
-    { id:48,  category: "كريبات" , name: "كريب كريسبي", desc:"كريسبي + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:46,  category: "كريبات" , name: "كريب كريسبي", desc:"كريسبي + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:75}]},   
-    { id:49,  category: "كريبات" , name: "كريب سجق", desc:"سجق + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:47,  category: "كريبات" , name: "كريب سجق", desc:"سجق + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:65}]},  
-    { id:50,  category: "كريبات" , name: "كريب فراخ شاورما", desc:"قطع فراخ + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:48,  category: "كريبات" , name: "كريب فراخ شاورما", desc:"قطع فراخ + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:75}]},  
-    { id:51,  category: "كريبات" , name: "كريب ميكس فراخ", desc:"شاورما فراخ +زنجر +بانيه + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:49,  category: "كريبات" , name: "كريب ميكس فراخ", desc:"شاورما فراخ +زنجر +بانيه + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:85}]},
-    { id:52,  category: "كريبات" , name: "كريب بانيه", desc:"  بانيه + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:50,  category: "كريبات" , name: "كريب بانيه", desc:"  بانيه + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:65}]},  
-    { id:53,  category: "كريبات" , name: "كريب زنجر", desc:"زنجر + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:51,  category: "كريبات" , name: "كريب زنجر", desc:"زنجر + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"كبير",p:75}]},
-    { id:54,  category: "كريبات" , name: "كريب فاهيتا فراخ", desc:"فاهيتا  + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:52,  category: "كريبات" , name: "كريب فاهيتا فراخ", desc:"فاهيتا  + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:85}]},
-    { id:55,  category: "كريبات" , name: "كريب اسستربس", desc:"استربس+ موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:53,  category: "كريبات" , name: "كريب اسستربس", desc:"استربس+ موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:75}]},
-    { id:56,  category: "كريبات" , name: "كريب الزعيم", desc:"سجق + بسطرمه +سوسيس + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:54,  category: "كريبات" , name: "كريب الزعيم", desc:"سجق + بسطرمه +سوسيس + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:85}]},
-    { id:57,  category: "كريبات" , name: "كريب سوسيس", desc:"سوسيس + موتزريلا + خس + كاتشب + مايونيز" , image:"", emoji:"🌮",
+    { id:55,  category: "كريبات" , name: "كريب سوسيس", desc:"سوسيس + موتزريلا + خس + كاتشب + مايونيز" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxgQd-ilRPRRN_Z1fzOz0KEWBibqapvqDVsIRaXa4DmA&s=10", emoji:"🌮",
       sizes:[{n:"one size",p:65}]},
-    { id:58,  category: "مكرونات" , name: "مكرونه نابولي", desc:" صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:56,  category: "مكرونات" , name: "مكرونه نابولي", desc:" صوص + موتزريلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOwvsAYMjc-VEE9isEgdyQ4velF2YpwDAe7Qfu0dYxUjdK4zfihU_fBGg&s=10", emoji:"🍝",
       sizes:[{n:"one size",p:50}]},  
-    { id:59,  category: "مكرونات  " , name: "مكرونه فوتشي", desc:"+جبنه رومي+ صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:57,  category: "مكرونات  " , name: "مكرونه فوتشي", desc:"+جبنه رومي+ صوص + موتزريلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOwvsAYMjc-VEE9isEgdyQ4velF2YpwDAe7Qfu0dYxUjdK4zfihU_fBGg&s=10", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
-    { id:60,  category: "مكرونات  " , name: "مكرونه بلونيز", desc:" لحمه + صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:58,  category: "مكرونات  " , name: "مكرونه بلونيز", desc:" لحمه + صوص + موتزريلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOwvsAYMjc-VEE9isEgdyQ4velF2YpwDAe7Qfu0dYxUjdK4zfihU_fBGg&s=10", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
-    { id:61,  category: "مكرونات  " , name: "مكرونه ميامي", desc:"سجق + صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:59,  category: "مكرونات  " , name: "مكرونه ميامي", desc:"سجق + صوص + موتزريلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOwvsAYMjc-VEE9isEgdyQ4velF2YpwDAe7Qfu0dYxUjdK4zfihU_fBGg&s=10", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
-    { id:62,  category: "مكرونات" , name: "مكرونه نيجرسكو فراخ ", desc:"فراخ+ صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:60,  category: "مكرونات" , name: "مكرونه نيجرسكو فراخ ", desc:"فراخ+ صوص + موتزريلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOwvsAYMjc-VEE9isEgdyQ4velF2YpwDAe7Qfu0dYxUjdK4zfihU_fBGg&s=10", emoji:"🍝",
       sizes:[{n:"one size",p:65}]},  
-    { id:63,  category: "مكرونات" , name: "مكرونه ميكس كانو", desc:"لحمه + مشروم + صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:61,  category: "مكرونات" , name: "مكرونه ميكس كانو", desc:"لحمه + مشروم + صوص + موتزريلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOwvsAYMjc-VEE9isEgdyQ4velF2YpwDAe7Qfu0dYxUjdK4zfihU_fBGg&s=10", emoji:"🍝",
       sizes:[{n:"one size",p:80}]},
-    { id:64,  category: "مكرونات" , name: "مكرونه هوت دوج", desc:"سوسيس + صوص + موتزريلا" , image:"", emoji:"🍝",
+    { id:62,  category: "مكرونات" , name: "مكرونه هوت دوج", desc:"سوسيس + صوص + موتزريلا" , image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOwvsAYMjc-VEE9isEgdyQ4velF2YpwDAe7Qfu0dYxUjdK4zfihU_fBGg&s=10", emoji:"🍝",
       sizes:[{n:"one size",p:80}]},
      
   
@@ -341,7 +439,13 @@ const CONFIG = {
       <a href="#gallery" id="galLink">المعرض</a>
       <a href="#contact">تواصل معنا</a>
     </div>
-    <button class="cart-btn" onclick="openCart()">🛒 السلة <span class="cart-count" id="count">0</span></button>
+    <button class="cart-btn" onclick="openCart()">🛒 <span class="cart-txt">السلة</span> <span class="cart-count" id="count">0</span></button>
+    <button class="menu-btn" id="menuBtn" aria-label="القائمة" aria-expanded="false">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#menu">🍕 المنيو</a>
+    <a href="#gallery" id="galLinkM">🖼️ المعرض</a>
+    <a href="#contact">📞 تواصل معنا</a>
   </div>
 </nav>
 
@@ -394,7 +498,7 @@ const CONFIG = {
       <div class="c-card reveal"><div class="ic">🕒</div><h3>مواعيد العمل</h3><p id="hours"></p></div>
     </div>
   </div>
-  <footer>© <span id="year"></span> <span id="foot"></span> — لصانع الموقع عرابي كل الح قوق محفوظة</footer>
+  <footer>© <span id="year"></span> <span id="foot"></span> — لصانع الموقع عرابي كل الحقوق محفوظة</footer>
 </section>
 
 <!-- Floating buttons -->
@@ -428,6 +532,12 @@ const CONFIG = {
 </aside>
 <div class="toast" id="toast"></div>
 
+<!-- شريط السلة للموبايل -->
+<button class="cart-bar" id="cartBar" onclick="openCart()">
+  <span>🛒 عرض الطلب <span class="cb-count" id="cbCount">0</span></span>
+  <span id="cbTotal">0</span>
+</button>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ====== Helpers ====== */
@@ -436,6 +546,21 @@ const money = n => n.toLocaleString('ar-EG') + ' ' + CONFIG.currency;
 const isImg = v => v && v.trim() !== '';
 let cart = {};          // key -> {key,id,name,size,price,qty}
 let activeCat = 'الكل';
+const isMobile = matchMedia('(max-width:760px), (pointer:coarse)').matches;
+
+/* ====== تنظيف البيانات (مسافات زيادة، عناصر فاضية، رقم واتساب) ====== */
+CONFIG.menu = (CONFIG.menu || []).filter(m => m && m.name).map(m => ({
+  ...m,
+  category: (m.category || 'أخرى').replace(/\s+/g, ' ').trim(),
+  name: m.name.replace(/\/\s*$/, '').replace(/\s+/g, ' ').trim(),
+  desc: (m.desc || '').replace(/\s+/g, ' ').trim()
+}));
+(function fixWa(){
+  let n = String(CONFIG.whatsapp || '').replace(/\D/g, '');
+  if (n.startsWith('00')) n = n.slice(2);
+  if (n.length === 11 && n.startsWith('0')) n = '20' + n.slice(1);   // رقم مصري محلي -> دولي
+  CONFIG.whatsapp = n;
+})();
 
 /* ====== Static content ====== */
 document.title = CONFIG.name + ' | اطلب دلوقتي';
@@ -447,11 +572,17 @@ $('#heroSlogan').textContent = CONFIG.slogan;
 $('#heroDesc').textContent = CONFIG.description;
 $('#addr').textContent = CONFIG.address;
 $('#hours').textContent = CONFIG.hours;
-if (isImg(CONFIG.logo)) $('#logoWrap').innerHTML = `<img src="${CONFIG.logo}" alt="">`;
-if (isImg(CONFIG.mapLink)) { $('#mapA').href = CONFIG.mapLink; $('#mapA').textContent = '🗺️ افتح على الخريطة'; }
+if (isImg(CONFIG.logo)) $('#logoWrap').innerHTML = `<img src="${CONFIG.logo}" alt="" onerror="this.replaceWith(document.createTextNode('🍕'))">`;
+if (isImg(CONFIG.mapLink)) {
+  const ml = CONFIG.mapLink.trim();
+  $('#mapA').href = /^https?:\/\//.test(ml) ? ml : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ml);
+  $('#mapA').textContent = '🗺️ افتح على الخريطة';
+}
 $('#phones').innerHTML = CONFIG.phones.map(p =>
   `<small style="color:var(--muted)">${p.label}</small><a class="num" href="tel:${p.number}">${p.number}</a>`).join('');
-$('#fabWa').href = `https://wa.me/${CONFIG.whatsapp}`;
+/* رابط واتساب موحّد (wa.me هو الرابط الرسمي وبيفتح التطبيق مباشرة على الموبايل) */
+const waLink = text => `https://wa.me/${CONFIG.whatsapp}` + (text ? `?text=${encodeURIComponent(text)}` : '');
+$('#fabWa').href = waLink(`أهلاً ${CONFIG.name} 👋 عايز أستفسر عن الطلب`);
 $('#fabCall').href = `tel:${CONFIG.phones[0]?.number || ''}`;
 
 /* ====== Build 3D pizza ====== */
@@ -493,6 +624,7 @@ function cssPizzaControl(){
   scene.addEventListener('pointermove', move);
   scene.addEventListener('pointerup', up);
   scene.addEventListener('pointerleave', up);
+  scene.addEventListener('pointercancel', up);
   (function loop(){ if (!dragging) rz += vz; apply(); requestAnimationFrame(loop); })();
 }
 
@@ -503,7 +635,7 @@ function threePizza(){
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -578,7 +710,7 @@ function threePizza(){
     sc.add(new THREE.HemisphereLight(0xfff0dd, 0x40250f, .75));
     const key = new THREE.DirectionalLight(0xfff1d6, 1.5);
     key.position.set(-5, 9, 5); key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.mapSize.set(isMobile ? 1024 : 2048, isMobile ? 1024 : 2048);
     Object.assign(key.shadow.camera, { left:-5, right:5, top:5, bottom:-5, near:1, far:25 });
     key.shadow.bias = -.0005; key.shadow.normalBias = .02;
     sc.add(key);
@@ -687,11 +819,12 @@ function threePizza(){
     host.addEventListener('pointermove', e => {
       if (!dragging) return;
       spin += (e.clientX - lx) * .012;
-      tilt = Math.min(80 * Math.PI / 180, Math.max(22 * Math.PI / 180, tilt + (e.clientY - ly) * .006));
+      // على اللمس السحب لفوق/تحت بيعمل سكرول للصفحة، فمش بنغيّر الميل
+      if (e.pointerType !== 'touch') tilt = Math.min(80 * Math.PI / 180, Math.max(22 * Math.PI / 180, tilt + (e.clientY - ly) * .006));
       lx = e.clientX; ly = e.clientY;
     });
     const up = () => dragging = false;
-    host.addEventListener('pointerup', up); host.addEventListener('pointerleave', up);
+    host.addEventListener('pointerup', up); host.addEventListener('pointerleave', up); host.addEventListener('pointercancel', up);
     new IntersectionObserver(es => visible = es[0].isIntersecting).observe(host);
 
     (function loop(now) {
@@ -717,7 +850,17 @@ if (!threePizza()) { cssPizzaBuild(); cssPizzaControl(); }
 function renderCats(){
   const cats = ['الكل', ...new Set(CONFIG.menu.map(m => m.category))];
   $('#cats').innerHTML = cats.map(c => `<button class="cat ${c===activeCat?'active':''}" data-c="${c}">${c}</button>`).join('');
-  document.querySelectorAll('.cat').forEach(b => b.onclick = () => { activeCat = b.dataset.c; renderCats(); renderMenu(); });
+  document.querySelectorAll('.cat').forEach(b => b.onclick = () => {
+    activeCat = b.dataset.c; renderCats(); renderMenu();
+    // على الموبايل: ارجع لأول المنيو لو كنت نازل تحت
+    const g = $('#menuGrid').getBoundingClientRect();
+    if (g.top < 0) window.scrollTo({ top: scrollY + g.top - 130, behavior: 'smooth' });
+  });
+  const act = document.querySelector('.cat.active');
+  if (act && act.scrollIntoView && $('#cats').scrollWidth > $('#cats').clientWidth) {
+    const c = $('#cats'), cr = c.getBoundingClientRect(), ar = act.getBoundingClientRect();
+    c.scrollBy({ left: (ar.left + ar.width / 2) - (cr.left + cr.width / 2), behavior: 'smooth' });
+  }
 }
 function renderMenu(){
   const items = CONFIG.menu.filter(m => activeCat==='الكل' || m.category===activeCat);
@@ -743,6 +886,7 @@ function renderMenu(){
 
 /* 3D tilt on hover */
 function tiltCards(){
+  if (!matchMedia('(hover:hover)').matches) return;   // مفيش hover على الموبايل
   document.querySelectorAll('.item').forEach(c => {
     c.addEventListener('mousemove', e => {
       const r = c.getBoundingClientRect();
@@ -792,11 +936,29 @@ function renderCart(){
   $('#del').textContent = del ? money(del) : (isDelivery() ? 'مجاناً' : '—');
   $('#tot').textContent = money(sub + del);
   $('#fAddr').style.display = isDelivery() ? '' : 'none';
+  // شريط السلة اللي تحت في الموبايل
+  const n = lines.reduce((s,l)=>s+l.qty,0);
+  document.body.classList.toggle('has-items', n > 0);
+  $('#cbCount').textContent = n;
+  $('#cbTotal').textContent = money(sub + del);
 }
 function saveCart(){ try{ localStorage.setItem('pizza_cart', JSON.stringify(cart)); }catch(e){} }
-function loadCart(){ try{ cart = JSON.parse(localStorage.getItem('pizza_cart')) || {}; }catch(e){ cart = {}; } }
-function openCart(){ $('#drawer').classList.add('open'); $('#overlay').classList.add('open'); }
-function closeCart(){ $('#drawer').classList.remove('open'); $('#overlay').classList.remove('open'); }
+function loadCart(){
+  try{ cart = JSON.parse(localStorage.getItem('pizza_cart')) || {}; }catch(e){ cart = {}; }
+  // شيل أي صنف قديم مبقاش في المنيو
+  Object.keys(cart).forEach(k => { if (!CONFIG.menu.some(m => m.id === cart[k].id)) delete cart[k]; });
+}
+function openCart(){ closeMenu(); $('#drawer').classList.add('open'); $('#overlay').classList.add('open'); document.body.classList.add('lock'); }
+function closeCart(){ $('#drawer').classList.remove('open'); $('#overlay').classList.remove('open'); document.body.classList.remove('lock'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+/* ====== قائمة الموبايل ====== */
+function closeMenu(){ $('#nav').classList.remove('menu-open'); $('#menuBtn').setAttribute('aria-expanded','false'); $('#menuBtn').textContent = '☰'; }
+$('#menuBtn').onclick = () => {
+  const open = $('#nav').classList.toggle('menu-open');
+  $('#menuBtn').setAttribute('aria-expanded', open); $('#menuBtn').textContent = open ? '✕' : '☰';
+};
+document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', closeMenu));
 document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener('change', renderCart));
 
 function sendOrder(){
@@ -818,8 +980,13 @@ function sendOrder(){
   msg += `👤 الاسم: ${name}\n📱 الموبايل: ${phone}\n`;
   msg += del ? `📍 العنوان: ${addr}\n🛵 توصيل\n` : `🏪 استلام من المحل\n`;
   if (note) msg += `📝 ملاحظات: ${note}\n`;
-const waNumber = String(CONFIG.whatsapp).replace(/\D/g, '');
-window.open(`https://api.whatsapp.com/send?phone=${waNumber}&text=${encodeURIComponent(msg)}`, '_blank');
+  if (!/^\d{10,15}$/.test(CONFIG.whatsapp)) { err.textContent = 'رقم الواتساب بتاع المحل مش متظبط'; return; }
+  const url = waLink(msg);
+  // على الموبايل: نفتح في نفس الصفحة عشان متصفحات فيسبوك/إنستجرام بتمنع النوافذ الجديدة.
+  // السلة محفوظة، فلو رجع للموقع هيلاقي طلبه.
+  if (isMobile) { location.href = url; return; }
+  const w = window.open(url, '_blank');
+  if (!w) location.href = url;   // لو المتصفح منع النافذة
 }
 
 function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(()=>e.classList.remove('show'),1600); }
@@ -828,7 +995,7 @@ function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('sh
 if (CONFIG.gallery && CONFIG.gallery.length){
   $('#gallery').style.display = '';
   $('#galGrid').innerHTML = CONFIG.gallery.map(src => `<div class="reveal"><img loading="lazy" src="${src}" alt=""></div>`).join('');
-} else { $('#galLink').style.display = 'none'; }
+} else { $('#galLink').style.display = 'none'; $('#galLinkM').style.display = 'none'; }
 
 /* ====== Scroll effects ====== */
 window.addEventListener('scroll', () => $('#nav').classList.toggle('scrolled', scrollY > 40));
